@@ -2,6 +2,25 @@
 	width: 900px;
 	padding: 35px;
 	margin: auto;
+
+	&:not(.password-less) {
+		.no-password {
+			display: none;
+		}
+	}
+
+	&.password-less {
+		.has-password {
+			display: none;
+		}
+	}
+	.form-status {
+		margin-top: @component-padding;
+
+		&.hidden {
+			display: none;
+		}
+	}
 }
 
 .kite-login-panel input {
