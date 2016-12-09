@@ -1,6 +1,6 @@
 .kite-login-panel {
-	width: 900px;
-	padding: 35px;
+	font-size: 1.2em;
+	padding: 2em;
 	margin: auto;
 
 	&:not(.password-less) {
@@ -20,9 +20,9 @@
 		&.hidden {
 			display: none;
 		}
-	}
-}
 
-.kite-login-panel input {
-	width: 190px;
+		&:empty {
+			display: none;
+		}
+	}
 }
