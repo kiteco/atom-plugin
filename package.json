@@ -20,7 +20,7 @@
       }
     }
   },
-  "config": {
+  "configSchema": {
     "enableCompletions": {
       "type": "boolean",
       "default": true,
