@@ -9,6 +9,9 @@
   "engines": {
     "atom": ">=1.0.0 <2.0.0"
   },
+  "scripts": {
+    "obfuscate": "sh ./obfuscate.sh"
+  },
   "dependencies": {
     "kite-installer": "0.4.8",
     "mixpanel": "^0.5.0"
@@ -40,5 +43,8 @@
         "^1.0.0": "consumeStatusBar"
       }
     }
+  },
+  "devDependencies": {
+    "javascript-obfuscator": "^0.8.3"
   }
 }
