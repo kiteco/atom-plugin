@@ -1,8 +1,3 @@
-cp package.json public/package.json;
-cp -R styles public/styles;
-cp -R keymaps public/keymaps;
-cp -R assets public/assets;
-
 function obfuscate {
   echo "obfuscate ${1} to public/${1}"
   if [[ "$1" = */* ]]; then

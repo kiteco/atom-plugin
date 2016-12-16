@@ -10,7 +10,8 @@
     "atom": ">=1.0.0 <2.0.0"
   },
   "scripts": {
-    "obfuscate": "sh ./obfuscate.sh"
+    "obfuscate": "sh ./scripts/obfuscate.sh",
+    "copy": "sh ./scripts/copy.sh",
   },
   "dependencies": {
     "kite-installer": "0.4.8",
