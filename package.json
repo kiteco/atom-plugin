@@ -13,6 +13,7 @@
     "setup": "sh ./scripts/setup.sh",
     "obfuscate": "sh ./scripts/obfuscate.sh",
     "copy": "sh ./scripts/copy.sh",
+    "package:json": "node ./scripts/update-package-json.js"
   },
   "dependencies": {
     "kite-installer": "0.4.8",
