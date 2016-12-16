@@ -10,6 +10,7 @@
     "atom": ">=1.0.0 <2.0.0"
   },
   "scripts": {
+    "setup": "sh ./scripts/setup.sh",
     "obfuscate": "sh ./scripts/obfuscate.sh",
     "copy": "sh ./scripts/copy.sh",
   },
