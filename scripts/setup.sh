@@ -1,3 +1,3 @@
-mkdir -p public; # git clone <kite-public-repo> public
+git clone git@github.com:kiteco/atom-plugin-public.git public
 cd public;
 npm install;
