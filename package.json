@@ -13,7 +13,12 @@
     "setup": "sh ./scripts/setup.sh",
     "obfuscate": "sh ./scripts/obfuscate.sh",
     "copy": "sh ./scripts/copy.sh",
-    "package:json": "node ./scripts/update-package-json.js"
+    "commit:private": "node ./scripts/update-version-and-tag.js",
+    "commit:public": "cd public; git add -A; git commit -am \"Prepare release\"",
+    "package:public": "node ./scripts/update-package-json.js",
+    "publish:patch": "sh ./scripts/publish.sh patch",
+    "publish:minor": "sh ./scripts/publish.sh minor",
+    "publish:major": "sh ./scripts/publish.sh major"
   },
   "dependencies": {
     "kite-installer": "0.4.8",

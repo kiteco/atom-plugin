@@ -13,13 +13,13 @@ const publicPackageJson = fs.existsSync(publicJsonPath)
   : {
     name: privatePackageJson.name,
     main: privatePackageJson.main,
-    version: privatePackageJson.version,
     description: privatePackageJson.description,
-    repository: privatePackageJson.repository,
+    repository: 'https://github.com/kiteco/atom-plugin-public',
     keywords: privatePackageJson.keywords,
     license: privatePackageJson.license
   };
 
+publicPackageJson.version = privatePackageJson.version;
 publicPackageJson.engines = privatePackageJson.engines;
 publicPackageJson.dependencies = privatePackageJson.dependencies;
 publicPackageJson.configSchema = privatePackageJson.configSchema;
