@@ -18,18 +18,9 @@
     "package:public": "node ./scripts/update-package-json.js",
     "publish:patch": "sh ./scripts/publish.sh patch",
     "publish:minor": "sh ./scripts/publish.sh minor",
-    "publish:major": "sh ./scripts/publish.sh major"
-  },
-  "dependencies": {
-    "kite-installer": "0.4.8",
-    "mixpanel": "^0.5.0"
-  },
-  "providedServices": {
-    "autocomplete.provider": {
-      "versions": {
-        "2.0.0": "completions"
-      }
-    }
+    "publish:major": "sh ./scripts/publish.sh major",
+    "lint": "eslint .",
+    "lint:fix": "eslint --fix ."
   },
   "configSchema": {
     "enableCompletions": {
@@ -45,6 +36,13 @@
       "description": "Check this box to check the status of the Kite auto-complete daemon."
     }
   },
+  "providedServices": {
+    "autocomplete.provider": {
+      "versions": {
+        "2.0.0": "completions"
+      }
+    }
+  },
   "consumedServices": {
     "status-bar": {
       "versions": {
@@ -52,7 +50,21 @@
       }
     }
   },
+  "dependencies": {
+    "kite-installer": "0.4.8",
+    "mixpanel": "^0.5.0"
+  },
   "devDependencies": {
+    "babel-eslint": "^7.1.1",
+    "eslint": "^3.11.1",
+    "eslint-config": "^0.3.0",
+    "eslint-config-fbjs": "^1.1.1",
+    "eslint-plugin-babel": "^4.0.0",
+    "eslint-plugin-flowtype": "^2.29.1",
+    "eslint-plugin-jasmine": "^2.2.0",
+    "eslint-plugin-prefer-object-spread": "^1.1.0",
+    "eslint-plugin-react": "^6.8.0",
+    "fbjs": "^0.8.6",
     "javascript-obfuscator": "^0.8.3"
   }
 }
