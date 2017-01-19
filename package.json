@@ -1,17 +1,31 @@
 {
   "name": "kite",
   "main": "./lib/kite",
-  "version": "0.6.1",
+  "version": "0.6.4",
   "description": "Python programming copilot — Kite shows cloud-powered completions, documentation, and examples.",
   "repository": "https://github.com/kiteco/atom-plugin",
   "keywords": [],
-  "license": "MIT",
+  "license": "SEE LICENSE IN LICENSE",
   "engines": {
     "atom": ">=1.0.0 <2.0.0"
   },
-  "dependencies": {
-    "kite-installer": "0.5.0",
-    "mixpanel": "^0.5.0"
+  "scripts": {
+    "lint": "eslint .",
+    "lint:fix": "eslint --fix ."
+  },
+  "configSchema": {
+    "enableCompletions": {
+      "type": "boolean",
+      "default": true,
+      "title": "Enable Completions",
+      "description": "Show auto-completions from Kite as Atom suggestions"
+    },
+    "checkReadiness": {
+      "type": "boolean",
+      "default": false,
+      "title": "Check Kite Status",
+      "description": "Check this box to check the status of the Kite auto-complete daemon."
+    }
   },
   "providedServices": {
     "autocomplete.provider": {
@@ -26,5 +40,22 @@
         "^1.0.0": "consumeStatusBar"
       }
     }
+  },
+  "dependencies": {
+    "kite-installer": "^0.7.2",
+    "mixpanel": "^0.5.0"
+  },
+  "devDependencies": {
+    "babel-eslint": "^7.1.1",
+    "eslint": "^3.11.1",
+    "eslint-config": "^0.3.0",
+    "eslint-config-fbjs": "^1.1.1",
+    "eslint-plugin-babel": "^4.0.0",
+    "eslint-plugin-flowtype": "^2.29.1",
+    "eslint-plugin-jasmine": "^2.2.0",
+    "eslint-plugin-prefer-object-spread": "^1.1.0",
+    "eslint-plugin-react": "^6.8.0",
+    "fbjs": "^0.8.6",
+    "javascript-obfuscator": "^0.8.3"
   }
 }
