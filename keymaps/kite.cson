@@ -2,7 +2,7 @@
 '.platform-darwin atom-text-editor':
   'cmd-alt-k': 'kite:open-in-web-at-cursor'
 
-'.platform-darwin .kite-login-panel':
+'.platform-darwin kite-login':
   'cmd-c': 'native!'
   'cmd-x': 'native!'
   'cmd-v': 'native!'

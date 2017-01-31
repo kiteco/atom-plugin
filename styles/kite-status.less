@@ -11,19 +11,23 @@ kite-status {
     }
   }
 
-  &[status="ready"] {
+  &[status="whitelisted"] {
     kite-logo svg polygon {
       fill: @text-color-info;
     }
   }
 
-  &[status="not-whitelisted"] {
+  &[status="reachable"],
+  &[status="authenticated"] {
     kite-logo svg polygon {
       fill: @text-color-warning;
     }
   }
 
-  &[status="error"] {
+  &[status="uninstalled"],
+  &[status="unsupported"],
+  &[status="running"],
+  &[status="installed"] {
     kite-logo svg polygon {
       fill: @text-color-error;
     }

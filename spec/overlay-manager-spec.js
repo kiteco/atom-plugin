@@ -3,8 +3,7 @@
 const fs = require('fs');
 const path = require('path');
 const http = require('http');
-const ready = require('../lib/ready.js');
-const metrics = require('../lib/metrics.js');
+const KiteApp = require('../lib/kite-app');
 const OverlayManager = require('../lib/overlay-manager');
 const {hoverPath} = require('../lib/utils');
 const {
@@ -23,13 +22,14 @@ const VISUAL_DEBUG = false;
 let jasmineContent;
 
 describe('OverlayManager', () => {
-  let editor, editorElement, showSpy, dismissSpy;
+  let editor, editorElement, showSpy, dismissSpy, app;
 
   const editorQuery = (selector) => editorElement.querySelector(selector);
 
   const editorQueryAll = (selector) => editorElement.querySelectorAll(selector);
 
   beforeEach(() => {
+    app = new KiteApp();
     showSpy = jasmine.createSpy();
     dismissSpy = jasmine.createSpy();
     jasmineContent = !VISUAL_DEBUG
@@ -49,9 +49,7 @@ describe('OverlayManager', () => {
     jasmineContent.appendChild(styleNode);
     jasmineContent.appendChild(atom.views.getView(atom.workspace));
 
-    spyOn(metrics, 'track');
     jasmine.useRealClock();
-    atom.config.set('kite.checkReadiness', true);
     waitsForPromise(() => atom.packages.activatePackage('language-python'));
     waitsForPromise(() => atom.workspace.open('sample.py').then(e => {
       editor = e;
@@ -70,7 +68,7 @@ describe('OverlayManager', () => {
   withKiteWhitelistedPaths([projectPath], () => {
     beforeEach(() => {
       waitsForPromise(() => atom.packages.activatePackage('kite'));
-      waitsForPromise(() => ready.ensure());
+      waitsForPromise(() => app.connect());
     });
 
     describe('.showHoverAtPosition()', () => {

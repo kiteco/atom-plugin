@@ -3,6 +3,11 @@ module.exports = {
   extends: ['fbjs'],
   globals: {
     waitsForPromise: false,
-    atom: false
+    atom: false,
+    advanceClock: false,
+    ffit: false,
+    fffit: false,
+    ffdescribe: false,
+    fffdescribe: false,
   }
 };

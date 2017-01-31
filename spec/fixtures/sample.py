@@ -20,15 +20,16 @@ class B(A):
     def __init__(self, foo):
         super(foo)
 
-    def increment(self, n):
-        return super(B, self).increment(n) + 1
+    def increment(self, n, **kwargs):
+        inc = kwargs.delta || 1
+        return super(B, self).increment(n) + inc
 
 if true:
     test = B('foo')
 else if false:
     test = A('foo')
 
-test.increment(2)
+test.increment(2, delta=5)
 
 if __name__ == "__main__":
     hello()
