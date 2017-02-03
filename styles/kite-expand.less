@@ -7,8 +7,9 @@
 kite-expand {
   display: inline-block;
   color: @text-color;
-  padding: @component-padding;
+  padding: @half-padding;
   font-family: @font-family;
+  font-size: 0.9em;
   .auto-cursor;
 
   a {
@@ -101,7 +102,7 @@ kite-expand {
     display: block;
     margin-top: -@component-padding;
     margin-left: @double-padding;
-    margin-bottom: @double-padding;
+    margin-bottom: @half-padding;
   }
 
   h4 {
@@ -305,7 +306,7 @@ atom-overlay > kite-expand, body > kite-expand {
   border: 1px solid mix(@text-color-highlight, @background-color-selected, 10%);
   border-radius: @component-border-radius;
   max-width: 40em;
-  box-shadow: 0 5px 10px rgba(0,0,0,0.1);
+  box-shadow: 0 0.5em 1em rgba(0,0,0,0.1);
 }
 
 // In a block decoration
@@ -337,7 +338,7 @@ kite-expand[data-screen-row] {
   }
 
   kite-expand-function, kite-expand-instance {
-    padding-bottom: 40px;
+    padding-bottom: 4em;
   }
 }
 
