@@ -1,7 +1,8 @@
 'use strict';
 
 const path = require('path');
-const {fakeKiteInstallPaths, withKiteWhitelistedPaths, sleep} = require('./spec-helpers');
+const {Installation} = require('kite-installer');
+const {fakeKiteInstallPaths, withKiteWhitelistedPaths, sleep, withFakeServer, fakeResponse} = require('./spec-helpers');
 
 const projectPath = path.join(__dirname, 'fixtures');
 
@@ -25,6 +26,41 @@ describe('Kite', () => {
   afterEach(() => {
     notificationsPkg.lastNotification = null;
     atom.notifications.clear();
+  });
+
+  describe('with Kite not installed yet', () => {
+    withFakeServer([[
+      o => o.path === '/atom/events',
+      o => fakeResponse(200, JSON.stringify({
+        decision: true,
+        variant: {
+          buttonPosition: 'top',
+          installCopy: 'short',
+          installTitle: 'choose',
+          showKiteLogo: 'yes',
+          showScreenshot: 'no',
+        },
+      })),
+    ]], () => {
+      beforeEach(() => {
+        localStorage.setItem('kite.wasInstalled', false);
+        waitsForPromise(() => atom.packages.activatePackage('kite').then(pkg => {
+          kitePkg = pkg.mainModule;
+        }));
+      });
+
+      it('opens the install flow in a new tab', () => {
+        const item = atom.workspace.getActivePaneItem();
+        expect(item instanceof Installation).toBeTruthy();
+      });
+
+      it('places the flow in the create account step', () => {
+        const item = atom.workspace.getActivePaneItem();
+        const view = atom.views.getView(item);
+
+        expect(view.querySelector('.create-account-step:not(.hidden)')).toExist();
+      });
+    });
   });
 
   describe('with the current project path not in the whitelist', () => {
