@@ -10,3 +10,12 @@
     background: @background-color-selected;
   }
 }
+
+atom-text-editor .kite-hyperclick {
+  .region {
+    z-index: 1;
+    pointer-events: auto;
+    border-bottom: 1px solid @text-color-info;
+    cursor: pointer;
+  }
+}
