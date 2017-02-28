@@ -68,4 +68,24 @@ describe('CursorMoveGesture', () => {
       expect(activateSpy).not.toHaveBeenCalled();
     });
   });
+
+  describe('without a token check', () => {
+    beforeEach(() => {
+      gesture = new CursorMoveGesture(editor, tokensList, {
+        checkToken: false,
+      });
+
+      gesture.onDidActivate(activateSpy);
+    });
+
+    describe('moved at a place where there is no token', () => {
+      beforeEach(() => {
+        editor.setCursorBufferPosition([0, 13]);
+      });
+
+      it('still triggers a did-activate event', () => {
+        expect(activateSpy).toHaveBeenCalled();
+      });
+    });
+  });
 });
