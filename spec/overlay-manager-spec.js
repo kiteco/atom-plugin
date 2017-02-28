@@ -118,7 +118,7 @@ describe('OverlayManager', () => {
 
         it('displays an overlay decoration with the results from the API', () => {
           expect(hover).toExist();
-          expect(hover.textContent.trim().replace(/\s+/, ' ')).toEqual('hello() Expand view');
+          expect(hover.querySelector('.name').textContent.trim().replace(/\s+/, ' ')).toEqual('hello()');
 
           expect(showSpy).toHaveBeenCalled();
         });
