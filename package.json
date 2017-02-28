@@ -22,7 +22,7 @@
     },
     "displayExpandViewAs": {
       "type": "string",
-      "default": "overlay",
+      "default": "sidebar",
       "enum": [
         "overlay",
         "block",
@@ -46,7 +46,7 @@
     },
     "openSidebarOnStartup": {
       "type": "boolean",
-      "default": true,
+      "default": false,
       "description": "When `Display Expand View As` is set to `sidebar` this setting will make the sidebar appears on startup."
     },
     "loggingLevel": {
