@@ -4,7 +4,7 @@ const KeyboardGesture = require('../../lib/gestures/keyboard');
 const TokensList = require('../../lib/tokens-list');
 const {keydown, keyup, mousemove} = require('../helpers/events');
 
-fdescribe('KeyboardGesture', () => {
+describe('KeyboardGesture', () => {
   let editor, editorElement, gesture, activateSpy, tokensList, jasmineContent, workspaceElement;
 
   beforeEach(() => {
