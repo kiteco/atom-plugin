@@ -2,40 +2,55 @@
 @import "variables";
 
 kite-hover {
-  display: flex;
-  flex-direction: row;
-  white-space: nowrap;
+  display: block;
   background: @background-color-selected;
   color: @text-color-highlight;
   border: 1px solid @border-color;
   padding: (@component-padding / 2) @component-padding;
   border-radius: @component-border-radius;
   font-family: @font-family;
-  align-items: center;
+
   .auto-cursor;
 
-  .type, .signature, a, a:hover, a:focus, a:active {
-    color: @text-color;
-  }
+  .definition {
+    display: flex;
+    flex-direction: row;
+    white-space: nowrap;
+    align-items: center;
 
-  > * {
-    flex: 1 1 0;
-    &:empty {
-      display: none;
+    .type, .signature, a, a:hover, a:focus, a:active {
+      color: @text-color;
     }
 
-    &:not(:first-child) {
-      text-align: right;
-      margin-left: @component-padding;
+    > * {
+      flex: 1 1 0;
+      &:empty {
+        display: none;
+      }
+
+      &:not(:first-child) {
+        text-align: right;
+        margin-left: @component-padding;
+      }
     }
   }
 
-  .btn {
-    border: none;
-    background: @base-background-color;
+  .actions {
+    .icon::before {
+      margin-right: 0;
+      vertical-align: middle
+    }
+    a, a:hover, a:focus, a:active {
+      color: @text-color-info;
+    }
 
-    &:hover {
-      background: @background-color-highlight;
+    a:hover {
+      text-decoration: underline;
+    }
+
+    a + a {
+      margin-left: @half-padding;
     }
   }
+
 }
