@@ -1,0 +1,28 @@
+
+'.platform-darwin atom-text-editor:not([mini])':
+  'ctrl-alt-k': 'kite:expand-at-cursor'
+  'cmd-alt-k': 'kite:open-in-web'
+
+'.platform-darwin kite-login':
+  'cmd-c': 'native!'
+  'cmd-x': 'native!'
+  'cmd-v': 'native!'
+
+'.platform-darwin .install-flow':
+  'cmd-c': 'native!'
+  'cmd-x': 'native!'
+  'cmd-v': 'native!'
+
+'.platform-darwin kite-sidebar':
+  'cmd-alt-k': 'kite:open-in-web'
+
+'body.platform-darwin .native-key-bindings kite-members-list atom-text-editor[mini]':
+  'backspace': 'core:backspace'
+  'enter': 'core:confirm'
+  'escape': 'core:cancel'
+  'up': 'core:move-up'
+  'down': 'core:move-down'
+  'ctrl-up': 'core:move-up'
+  'ctrl-down': 'core:move-down'
+  'left': 'core:move-left'
+  'right': 'core:move-right'

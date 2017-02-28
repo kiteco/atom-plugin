@@ -1,0 +1,28 @@
+
+'.platform-linux atom-text-editor:not([mini])':
+  'ctrl-alt-shift-k': 'kite:expand-at-cursor'
+  'ctrl-alt-k': 'kite:open-in-web'
+
+'.platform-linux kite-login':
+  'ctrl-c': 'native!'
+  'ctrl-x': 'native!'
+  'ctrl-v': 'native!'
+
+'.platform-linux .install-flow':
+  'ctrl-c': 'native!'
+  'ctrl-x': 'native!'
+  'ctrl-v': 'native!'
+
+'.platform-linux kite-sidebar':
+  'ctrl-alt-k': 'kite:open-in-web'
+
+'body.platform-darwin .native-key-bindings kite-members-list atom-text-editor[mini]':
+  'backspace': 'core:backspace'
+  'enter': 'core:confirm'
+  'escape': 'core:cancel'
+  'up': 'core:move-up'
+  'down': 'core:move-down'
+  'ctrl-up': 'core:move-up'
+  'ctrl-down': 'core:move-down'
+  'left': 'core:move-left'
+  'right': 'core:move-right'
