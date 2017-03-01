@@ -1,12 +1,44 @@
 @import "ui-variables";
 @import "variables";
 
+atom-panel.left kite-sidebar {
+  .kite-column {
+    padding-right: @half-padding;
+  }
+  .kite-sidebar-resizer {
+    order: 2;
+  }
+}
+
+atom-panel.right kite-sidebar {
+  .kite-column {
+    padding-left: @half-padding;
+  }
+  .kite-sidebar-resizer {
+    order: 0;
+  }
+}
+
 kite-sidebar {
   display: flex;
-  flex-direction: column;
   font-size: 1em;
-  padding: @component-padding;
   font-family: @font-family;
+  flex-direction: row;
+
+  .kite-sidebar-resizer {
+    width: @half-padding;
+    cursor: ew-resize;
+    flex: 0 0 auto;
+  }
+
+  .kite-column {
+    display: flex;
+    padding: @component-padding;
+    flex-direction: column;
+    order: 1;
+    flex: 1 1 auto;
+    overflow: hidden;
+  }
 
   .background-message {
     opacity: 0.5;
