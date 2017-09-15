@@ -5,3 +5,5 @@ def foo():
     return 'bar'
 
 foo()
+
+test = B('foo')
