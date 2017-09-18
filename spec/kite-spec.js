@@ -16,7 +16,7 @@ describe('Kite', () => {
     jasmineContent = document.querySelector('#jasmine-content');
     workspaceElement = atom.views.getView(atom.workspace);
 
-    atom.config.set('kite.showKiteTourOnStatup', false);
+    atom.config.set('kite.showKiteTourOnStartup', false);
 
     jasmineContent.appendChild(workspaceElement);
 
@@ -54,7 +54,7 @@ describe('Kite', () => {
 
       it('opens the install flow in a new tab', () => {
         const item = atom.workspace.getActivePaneItem();
-        console.log(item)
+        console.log(item);
         expect(item instanceof Installation).toBeTruthy();
       });
 
