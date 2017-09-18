@@ -14,9 +14,10 @@
     "lint:fix": "eslint --fix ."
   },
   "configSchema": {
-    "showKiteTourOnStatup": {
+    "showKiteTourOnStartup": {
       "type": "boolean",
       "default": true,
+      "title": "Show Kite Tour On Startup",
       "description": "Whether to display the Kite tour on startup."
     },
     "enableCompletions": {
