@@ -40,10 +40,21 @@ TODO
 
 #### Hover documentation
 
-When you move the mouse over a symbol, Kite can display some popup with a quick summary of what this symbol represent and links to additional documentation. 
-
+When you move the mouse over a symbol, Kite can display some popup with a quick summary of what this symbol represent and links to additional documentation.
 
 ![kite hover](./images/kite-hover.png)
+
+You can see up to three links in the popup:
+
+- `def` will open the file where this symbol is defined
+- `web` will open the symbol documentation page in your browser
+- `more` will open the [Kite sidebar panel](#sidebar-panel) with additional documentation for this symbol
+
+#### Context Menu
+
+Kite plugin also provides contextual menus with actions related to the symbol below the mouse.
+
+![kite sidebar](./images/kite-context-menu.png)
 
 #### Completions
 
@@ -51,14 +62,63 @@ Kite's Atom plugin exposes an `autocomplete-plus` provider. When in a supported 
 
 ![kite completions](./images/kite-completions.png)
 
+The links at the bottom have the same behaviour than those in the [hover UI](#hover-documentation).
+
 #### Functions Signatures
 
 When typing inside a function's parentheses the Kite plugin will display the function signature with information regarding the current argument and links to additional documentation.
 
 ![kite signatures](./images/kite-signature.png)
 
+The links at the bottom have the same behaviour than those in the [hover UI](#hover-documentation).
+
+#### Sidebar Panel
+
+The Kite sidebar panel offer a more detailed view of a symbol documentation. You can use the sidebar panel to browse the members of a module or a type, or to access curated examples, Stack Overflow topics, and more.
+
+![kite sidebar](./images/kite-sidebar.png)
+
 #### Active Search
 
-#### Context Menu
+When working in a supported file, this small overlay will be displayed at the bottom right of the workspace.
 
-#### Commands
+![kite sidebar](./images/kite-active-search-collapsed.png)
+
+Clicking on it will expand Kite's active search. It allows you to search in Kite's documentation at any moment.
+
+![kite sidebar](./images/kite-active-search.png)
+
+### Commands
+
+The Kite plugin exposes many commands so that you can setup your own keybindings for them.
+
+|Command|Description|
+|---|---|
+|`kite:active-search`|Expand the active search panel.|
+|`kite:expand-at-cursor`|When the cursor is inside a symbol this command will open the sidebar panel with the symbol's documentation.|
+|`kite:open-permissions`|Opens Kite's permissions into your browser.|
+|`kite:open-settings`|Opens Kite's settingsg into your browser.|
+|`kite:open-sidebar`|Opens Kite's sidebar panel.|
+|`kite:close-sidebar`|Closes Kite's sidebar panel.|
+|`kite:toggle-sidebar`|Toggle Kite's sidebar panel.|
+
+### Settings
+
+
+|Setting|Description|
+|---|---|
+|`Show Kite Tour On Startup`|Whether to display the Kite tour on startup.|
+|`Enable Completions`|Show auto-completions from Kite as Atom suggestions.|
+|`Enable Hover UI`|Show hover informations when placing the mouse over a symbol|
+|`Display Expand View As`|This setting defines how the Kite expanded view will be displayed in Atom.|
+|`Sidebar Position`|When `Display Expand View As` is set to `sidebar` this setting defines where to place the sidebar in the Atom UI.|
+|`Sidebar Width`|When `Display Expand View As` is set to `sidebar` this setting defines the width of the sidebar.|
+|`Use Dock For Sidebar`|When the dock API is available in your Atom version Kite will use it to display the sidebar panel.|
+|`Open Sidebar On Startup`|When `Display Expand View As` is set to `sidebar` this setting will make the sidebar appears on startup.|
+|`Max Visible Suggestions Along Signature`|When both signature and completions are displayed at the same time, this setting controls the maximum number of suggestions visible.|
+|`Active Search Position`|Controls where the active search collapsed panel is displayed.|
+|`Hide Documentation When Signature Is Available`|If both a signature and documentation is available at the same only the signature will be visible.|
+|`Collapse Long Summaries`|Whether to collapse or not long summaries in the sidebar panel.|
+|`Polling Interval`|The interval between status checks for the active file.|
+|`Logging Level`|The verbosity level of Kite's logs.|
+|`Developer Mode`|Enable Kite developer mode, displaying received data in the various UIs.|
