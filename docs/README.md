@@ -32,9 +32,13 @@ This tour will only be displayed once, if you want to see it again on next start
 
 ### Status Bar
 
-The Kite icon in the status bar displays the state of Kite for the current file.
+The Kite icon in the status bar displays the state of Kite for the current file. By clicking on the icon you open the status panel with additional information.
 
-TODO
+The icon in the status bar can take three different colors:
+
+- blue: The Kite Engine is available and functioning properly.<br/>![kite tour](./images/kite-status-ready.png)
+- gray: There's either no open file or, if there's an active file, the file is either not supported or not whitelisted.<br/>![kite tour](./images/kite-status-not-whitelisted.png)
+- red: Something went wrong when the plugin tried to contact the Kite service on your computer. Depending on the issue, the status panel can offer actions to solve the problem.<br/>![kite tour](./images/kite-status-not-running.png)
 
 ### Editor Features
 
