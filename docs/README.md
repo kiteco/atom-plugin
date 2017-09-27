@@ -110,11 +110,10 @@ The Kite plugin exposes many commands so that you can setup your own keybindings
 |`Show Kite Tour On Startup`|Whether to display the Kite tour on startup.|
 |`Enable Completions`|Show auto-completions from Kite as Atom suggestions.|
 |`Enable Hover UI`|Show hover informations when placing the mouse over a symbol|
-|`Display Expand View As`|This setting defines how the Kite expanded view will be displayed in Atom.|
-|`Sidebar Position`|When `Display Expand View As` is set to `sidebar` this setting defines where to place the sidebar in the Atom UI.|
-|`Sidebar Width`|When `Display Expand View As` is set to `sidebar` this setting defines the width of the sidebar.|
+|`Sidebar Position`|Defines where to place the sidebar in the Atom UI.|
+|`Sidebar Width`|Defines the width of the sidebar. When the sidebar is displayed using the new dock API this value will serve as the preferred width.|
 |`Use Dock For Sidebar`|When the dock API is available in your Atom version Kite will use it to display the sidebar panel.|
-|`Open Sidebar On Startup`|When `Display Expand View As` is set to `sidebar` this setting will make the sidebar appears on startup.|
+|`Open Sidebar On Startup`|Makes the sidebar appears on startup when enabled.|
 |`Max Visible Suggestions Along Signature`|When both signature and completions are displayed at the same time, this setting controls the maximum number of suggestions visible.|
 |`Active Search Position`|Controls where the active search collapsed panel is displayed.|
 |`Hide Documentation When Signature Is Available`|If both a signature and documentation is available at the same only the signature will be visible.|
