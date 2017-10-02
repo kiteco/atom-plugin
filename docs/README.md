@@ -32,6 +32,7 @@ This tour will only be displayed once, if you want to see it again on next start
 
 ### Status Bar
 
+<<<<<<< HEAD
 The Kite icon in the status bar displays the state of Kite for the current file. By clicking on the icon you open the status panel with additional information.
 
 The icon in the status bar can take three different colors:
@@ -39,6 +40,11 @@ The icon in the status bar can take three different colors:
 - blue: The Kite Engine is available and functioning properly.<br/>![kite tour](./images/kite-status-ready.png)
 - gray: There's either no open file or, if there's an active file, the file is either not supported or not whitelisted.<br/>![kite tour](./images/kite-status-not-whitelisted.png)
 - red: Something went wrong when the plugin tried to contact the Kite service on your computer. Depending on the issue, the status panel can offer actions to solve the problem.<br/>![kite tour](./images/kite-status-not-running.png)
+=======
+The Kite icon in the status bar displays the state of Kite for the current file.
+
+TODO
+>>>>>>> 3f459b8e17f51ef86cd3de568fb9d6e5a2b564c6
 
 ### Editor Features
 
@@ -114,10 +120,18 @@ The Kite plugin exposes many commands so that you can setup your own keybindings
 |`Show Kite Tour On Startup`|Whether to display the Kite tour on startup.|
 |`Enable Completions`|Show auto-completions from Kite as Atom suggestions.|
 |`Enable Hover UI`|Show hover informations when placing the mouse over a symbol|
+<<<<<<< HEAD
 |`Sidebar Position`|Defines where to place the sidebar in the Atom UI.|
 |`Sidebar Width`|Defines the width of the sidebar. When the sidebar is displayed using the new dock API this value will serve as the preferred width.|
 |`Use Dock For Sidebar`|When the dock API is available in your Atom version Kite will use it to display the sidebar panel.|
 |`Open Sidebar On Startup`|Makes the sidebar appears on startup when enabled.|
+=======
+|`Display Expand View As`|This setting defines how the Kite expanded view will be displayed in Atom.|
+|`Sidebar Position`|When `Display Expand View As` is set to `sidebar` this setting defines where to place the sidebar in the Atom UI.|
+|`Sidebar Width`|When `Display Expand View As` is set to `sidebar` this setting defines the width of the sidebar.|
+|`Use Dock For Sidebar`|When the dock API is available in your Atom version Kite will use it to display the sidebar panel.|
+|`Open Sidebar On Startup`|When `Display Expand View As` is set to `sidebar` this setting will make the sidebar appears on startup.|
+>>>>>>> 3f459b8e17f51ef86cd3de568fb9d6e5a2b564c6
 |`Max Visible Suggestions Along Signature`|When both signature and completions are displayed at the same time, this setting controls the maximum number of suggestions visible.|
 |`Active Search Position`|Controls where the active search collapsed panel is displayed.|
 |`Hide Documentation When Signature Is Available`|If both a signature and documentation is available at the same only the signature will be visible.|
