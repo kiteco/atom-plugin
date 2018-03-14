@@ -58,7 +58,7 @@
     },
     "useDockForSidebar": {
       "type": "boolean",
-      "default": false
+      "default": true
     },
     "openSidebarOnStartup": {
       "type": "boolean",
