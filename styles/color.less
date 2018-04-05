@@ -1,0 +1,114 @@
+
+/*
+
+TK DISCUSSION
+
+This PR adds synthesizing syntax highlighting palette for situations where dark UI theme is paired
+with the light syntax theme, or vice versa.
+
+Today, this often looks bad – but the PR makes it better.
+TK EXAMPLES
+
+I would like to consider more syntax highlighting in our panels – they look good and work better
+functionally. Here’s an example of my future work in progress in redesigning the panel so that there
+is more syntax highlighting there.
+
+Two issues:
+1. I know this is tricky to get right, for example the syntax highlighting in our panel cannot always
+be perfect.
+2. Likewise, this PR won’t always be able to synthesize the right colors, since it’s reading off of
+variables, not actual CSS (some colour themes don’t use variables directly).
+
+TK EXAMPLE
+
+Questions: How precious are programmers about the details syntax highlighting? Is getting it 80% right better
+than nothing? Will people appreciate the benefits of syntax highlighting, even if in some cases we won’t
+get their colours right? (One way to answer this could be to deploy this PR and listen to people’s
+feedback!)
+
+There are other solutions, listed below for reference and discussions:
+
+                                                           THE PR IS THIS SOLUTION BELOW
+----------------------------------------------------------------------------------------------------------------------
+| No syntax highlighting      | Our syntax highlighting    | Synthesized syntax         | Smart synthesized syntax   |
+|                             | palette                    | highlighting palette       | highlighting palette       |
+|                             |                            |                            |                            |
+| We have one dark and one    | We have one dark and one   | We use the default palette | As before, but we actually |
+| light text color for        | light syntax highlighting  | and synthesized colors     | read them off of text.     |
+| code. That’s it. All code   | palette. They are neutral, | from CSS variables.        | We include filters etc.    |
+| looks the same.             | perhaps grayish or based   | Sometimes, the variables   |                            |
+|                             | off of default code colour.| won’t be correct.          |                            |
+|                             |                            |                            |                            |
+| Trivial CSS                 | Simple CSS                 | More complex CSS           | JavaScript, very complex   |
+----------------------------------------------------------------------------------------------------------------------
+
+*/
+
+
+
+.DEBUGkite-code {
+  pre,
+  code {
+    // Override all the default text color
+    color: @syntax-text-color;
+
+    // In case of a user selecting a combination of:
+    // dark UI theme/light syntax theme OR light UI theme/dark syntax theme
+    // using the default syntax colors often makes them unreadable since we
+    // have to output them on the UI background, not the syntax background.
+    // In this case, we synthesize new syntax colors.
+    .synthesized-syntax-color(@syntax-text-color, @tab-background-color);
+  }
+}
+
+// For light UI theme and dark syntax theme, both the text color and the pane
+// background will be light. In this case, we synthesize dark text colors
+// based on the light colors.
+.synthesized-syntax-color (@text-color, @background-color)
+    when ((lightness(@text-color) >= 50%) and (lightness(@background-color) >= 50%)) {
+  &, .syntax--python {
+    color: hsl(hue(@syntax-text-color), saturation(@syntax-text-color), .2) !important;
+  }
+  .syntax--python.syntax--variable {
+    color: hsl(hue(@syntax-color-variable), saturation(@syntax-color-variable),
+        100 - lightness(@syntax-color-variable))  !important;
+  }
+  .syntax--python.syntax--keyword {
+    color: hsl(hue(@syntax-color-keyword), saturation(@syntax-color-keyword),
+        100 - lightness(@syntax-color-keyword)) !important;
+  }
+  .syntax--python.syntax--control,
+  .syntax--python.syntax--function {
+    color: hsl(hue(@syntax-color-function), saturation(@syntax-color-function),
+        100 - lightness(@syntax-color-function)) !important;
+  }
+  .syntax--python.syntax--constant {
+    color: hsl(hue(@syntax-color-constant), saturation(@syntax-color-constant),
+        100 - lightness(@syntax-color-constant)) !important;
+  }
+  // The above are not all the possible options – just the ones we use
+}
+
+// For dark UI theme and light syntax theme, both the text color and the pane
+// background will be dark. In this case, we synthesize light text colors
+// based on the light colors.
+.synthesized-syntax-color (@text-color, @background-color)
+    when ((lightness(@text-color) < 50%) and (lightness(@background-color) < 50%)) {
+  &, .syntax--python {
+    color: hsl(hue(@syntax-text-color), saturation(@syntax-text-color), .7) !important;
+  }
+  .syntax--python.syntax--variable {
+    color: hsl(hue(@syntax-color-variable), saturation(@syntax-color-variable), .7) !important;
+  }
+  .syntax--python.syntax--keyword {
+    color: hsl(hue(@syntax-color-keyword), saturation(@syntax-color-keyword), .7) !important;
+  }
+  .syntax--python.syntax--control,
+  .syntax--python.syntax--function {
+    color: hsl(hue(@syntax-color-function), saturation(@syntax-color-function), .7) !important;
+  }
+  .syntax--python.syntax--constant {
+    color: hsl(hue(@syntax-color-constant), saturation(@syntax-color-constant), .7) !important;
+  }
+  // The above are not all the possible options – just the ones we use
+}
