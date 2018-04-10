@@ -1,0 +1,66 @@
+.kite-code {
+  pre,
+  code {
+    // Override all the default text color
+    color: @syntax-text-color;
+
+    // In case of a user selecting a combination of:
+    // dark UI theme/light syntax theme OR light UI theme/dark syntax theme
+    // using the default syntax colors often makes them unreadable since we
+    // have to output them on the UI background, not the syntax background.
+    // In this case, we synthesize new syntax colors.
+    .synthesized-syntax-color(@syntax-text-color, @tab-background-color);
+  }
+}
+
+// For light UI theme and dark syntax theme, both the text color and the pane
+// background will be light. In this case, we synthesize dark text colors
+// based on the light colors.
+.synthesized-syntax-color (@text-color, @background-color)
+    when ((lightness(@text-color) >= 50%) and (lightness(@background-color) >= 50%)) {
+  &, .syntax--python {
+    color: hsl(hue(@syntax-text-color), saturation(@syntax-text-color), .2) !important;
+  }
+  .syntax--python.syntax--variable {
+    color: hsl(hue(@syntax-color-variable), saturation(@syntax-color-variable),
+        100 - lightness(@syntax-color-variable))  !important;
+  }
+  .syntax--python.syntax--keyword {
+    color: hsl(hue(@syntax-color-keyword), saturation(@syntax-color-keyword),
+        100 - lightness(@syntax-color-keyword)) !important;
+  }
+  .syntax--python.syntax--control,
+  .syntax--python.syntax--function {
+    color: hsl(hue(@syntax-color-function), saturation(@syntax-color-function),
+        100 - lightness(@syntax-color-function)) !important;
+  }
+  .syntax--python.syntax--constant {
+    color: hsl(hue(@syntax-color-constant), saturation(@syntax-color-constant),
+        100 - lightness(@syntax-color-constant)) !important;
+  }
+  // The above are not all the possible options – just the ones we use
+}
+
+// For dark UI theme and light syntax theme, both the text color and the pane
+// background will be dark. In this case, we synthesize light text colors
+// based on the light colors.
+.synthesized-syntax-color (@text-color, @background-color)
+    when ((lightness(@text-color) < 50%) and (lightness(@background-color) < 50%)) {
+  &, .syntax--python {
+    color: hsl(hue(@syntax-text-color), saturation(@syntax-text-color), .7) !important;
+  }
+  .syntax--python.syntax--variable {
+    color: hsl(hue(@syntax-color-variable), saturation(@syntax-color-variable), .7) !important;
+  }
+  .syntax--python.syntax--keyword {
+    color: hsl(hue(@syntax-color-keyword), saturation(@syntax-color-keyword), .7) !important;
+  }
+  .syntax--python.syntax--control,
+  .syntax--python.syntax--function {
+    color: hsl(hue(@syntax-color-function), saturation(@syntax-color-function), .7) !important;
+  }
+  .syntax--python.syntax--constant {
+    color: hsl(hue(@syntax-color-constant), saturation(@syntax-color-constant), .7) !important;
+  }
+  // The above are not all the possible options – just the ones we use
+}
