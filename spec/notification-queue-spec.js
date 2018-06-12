@@ -29,6 +29,7 @@ describe('NotificationQueue', () => {
   });
 
   afterEach(() => {
+    queue.abort();
     notificationsPkg.lastNotification = null;
     atom.notifications.clear();
     notification && notification.dismiss();

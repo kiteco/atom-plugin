@@ -4,6 +4,7 @@ const os = require('os');
 
 // const {StateController} = require('kite-installer');
 const NotificationsCenter = require('../lib/notifications-center');
+const NotificationQueue = require('../lib/notification-queue');
 const KiteApp = require('../lib/kite-app');
 const {
   fakeKiteInstallPaths, withKiteNotReachable, // withKiteNotRunning,
@@ -35,7 +36,9 @@ describe('NotificationsCenter', () => {
   fakeKiteInstallPaths();
 
   beforeEach(() => {
-    app = new KiteApp();
+    app = new KiteApp({
+      notificationQueue: new NotificationQueue(),
+    });
     notifications = new NotificationsCenter(app);
 
     workspaceElement = atom.views.getView(atom.workspace);
@@ -647,8 +650,13 @@ describe('NotificationsCenter', () => {
         beforeEach(() => {
           app.emitter.emit('did-get-unauthorized', {message: 'Some error'});
 
-          notificationElement = getNotificationElement();
-          notification = notificationElement.getModel();
+          waitsFor('notification', () => {
+            notificationElement = getNotificationElement();
+            if (notificationElement) {
+              notification = notificationElement.getModel();
+            }
+            return notificationElement;
+          });
         });
 
         it('notifies the user', () => {
@@ -800,8 +808,13 @@ describe('NotificationsCenter', () => {
               data: 5,
             });
 
-            notificationElement = getNotificationElement();
-            notification = notificationElement.getModel();
+            waitsFor('notification', () => {
+              notificationElement = getNotificationElement();
+              if (notificationElement) {
+                notification = notificationElement.getModel();
+              }
+              return notificationElement;
+            });
           });
 
           it('notifies the user', () => {

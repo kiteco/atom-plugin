@@ -20,7 +20,6 @@ xdescribe('error rescue', () => {
     localStorage.removeItem('kite.autocorrect_model_version');
 
     atom.config.set('kite.actionWhenErrorRescueFixesCode', ERROR_RESCUE_DONT_SHOW_SIDEBAR);
-
     // Use these styles if you need to display the workspace when running the tests
     // jasmineContent.innerHTML = `
     // <style>
