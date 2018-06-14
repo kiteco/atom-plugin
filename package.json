@@ -146,6 +146,7 @@
     "getmac": "^1.2.1",
     "kite-installer": "git://github.com/kiteco/kite-installer.git#cn-switch-to-kite-api",
     "kite-api": "git://github.com/kiteco/kite-api-js.git#master",
+    "kite-connect": "git://github.com/kiteco/kite-connect-js.git#master",
     "md5": "^2.2.0",
     "rollbar": "^2.3.8",
     "underscore-plus": "^1",

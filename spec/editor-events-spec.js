@@ -1,41 +1,49 @@
 'use strict';
 
-const http = require('http');
+const {StateController} = require('kite-installer');
+const {withKite, withKiteRoutes} = require('kite-api/test/helpers/kite');
+const {fakeResponse} = require('kite-api/test/helpers/http');
+
 const EditorEvents = require('../lib/editor-events');
-const {withFakeServer, fakeResponse} = require('./spec-helpers');
 
 describe('EditorEvents', () => {
   let editor, events;
 
-  withFakeServer([
-    [
-      o => /\/clientapi\/editor\/event/.test(o.path),
-      o => fakeResponse(200),
-    ], [
-      o => /\/clientapi\/editor\/error/.test(o.path),
-      o => fakeResponse(200),
-    ],
-  ], () => {
-    describe('when attached to an editor', () => {
-      beforeEach(() => {
-        waitsForPromise(() => atom.workspace.open('sample.py').then(e => {
-          editor = e;
-          events = new EditorEvents(editor);
-        }));
-      });
+  beforeEach(() => {
+    spyOn(StateController.client, 'request').andCallThrough();
+  });
 
-      afterEach(() => {
-        events.dispose();
-      });
+  withKite({reachable: true}, () => {
+    withKiteRoutes([
+      [
+        o => /\/clientapi\/editor\/event/.test(o.path),
+        o => fakeResponse(200),
+      ], [
+        o => /\/clientapi\/editor\/error/.test(o.path),
+        o => fakeResponse(200),
+      ],
+    ], () => {
+      describe('when attached to an editor', () => {
+        beforeEach(() => {
+          waitsForPromise(() => atom.workspace.open('sample.py').then(e => {
+            editor = e;
+            events = new EditorEvents(editor);
+          }));
+        });
 
-      describe('when an edit is made', () => {
-        it('foo', () => {
-          editor.moveLineDown();
+        afterEach(() => {
+          events.dispose();
+        });
 
-          advanceClock(10);
+        describe('when an edit is made', () => {
+          it('foo', () => {
+            editor.moveLineDown();
 
-          expect(http.request).toHaveBeenCalled();
-          expect(http.request.callCount).toEqual(1);
+            advanceClock(10);
+
+            expect(StateController.client.request).toHaveBeenCalled();
+            expect(StateController.client.request.callCount).toEqual(1);
+          });
         });
       });
     });

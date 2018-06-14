@@ -1,12 +1,11 @@
 'use struct';
 
+const {withKite, withKitePaths} = require('kite-api/test/helpers/kite');
+
 const KiteApp = require('../../lib/kite-app');
 const KiteStatus = require('../../lib/elements/kite-status');
-const {fakeKiteInstallPaths, withKiteNotReachable, withKiteNotRunning, withKiteNotAuthenticated, withKiteWhitelistedPaths} = require('../spec-helpers');
 
 describe('KiteStatus', () => {
-  fakeKiteInstallPaths();
-
   let status, app;
 
   beforeEach(() => {
@@ -21,7 +20,7 @@ describe('KiteStatus', () => {
     expect(status.getAttribute('status')).toEqual('unknown');
   });
 
-  describe('when kite is not installed', () => {
+  withKite({installed: false}, () => {
     it('changes its status to UNINSTALLED', () => {
       waitsForPromise(() => app.connect().then(() => {
         expect(status.getAttribute('status')).toEqual('uninstalled');
@@ -29,7 +28,7 @@ describe('KiteStatus', () => {
     });
   });
 
-  withKiteNotRunning(() => {
+  withKite({running: false}, () => {
     it('changes its status to INSTALLED', () => {
       waitsForPromise(() => app.connect().then(() => {
         expect(status.getAttribute('status')).toEqual('installed');
@@ -37,7 +36,7 @@ describe('KiteStatus', () => {
     });
   });
 
-  withKiteNotReachable(() => {
+  withKite({reachable: false}, () => {
     it('changes its status to RUNNING', () => {
       waitsForPromise(() => app.connect().then(() => {
         expect(status.getAttribute('status')).toEqual('running');
@@ -45,7 +44,7 @@ describe('KiteStatus', () => {
     });
   });
 
-  withKiteNotAuthenticated(() => {
+  withKite({logged: false}, () => {
     it('changes its status to REACHABLE', () => {
       waitsForPromise(() => app.connect().then(() => {
         expect(status.getAttribute('status')).toEqual('reachable');
@@ -53,23 +52,13 @@ describe('KiteStatus', () => {
     });
   });
 
-  withKiteWhitelistedPaths(() => {
-    it('changes its status to AUTHENTICATED', () => {
-      waitsForPromise(() => app.connect().then(() => {
-        expect(status.getAttribute('status')).toEqual('authenticated');
-      }));
+  withKite({logged: true}, () => {
+    withKitePaths({}, undefined, () => {
+      it('changes its status to AUTHENTICATED', () => {
+        waitsForPromise(() => app.connect().then(() => {
+          expect(status.getAttribute('status')).toEqual('authenticated');
+        }));
+      });
     });
   });
-
-  // withKiteWhitelistedPaths([__dirname], () => {
-  //   beforeEach(() => {
-  //     atom.project.setPaths([__dirname]);
-  //   });
-  //
-  //   it('changes its status to WHITELISTED', () => {
-  //     waitsForPromise(() => app.connect().then(() => {
-  //       expect(status.getAttribute('status')).toEqual('whitelisted');
-  //     }));
-  //   });
-  // });
 });

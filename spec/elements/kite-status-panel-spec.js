@@ -1,20 +1,14 @@
 'use strict';
 
-const os = require('os');
-const {withKite} = require('kite-api/test/helpers/kite');
+const path = require('path');
+const {withKite, withKiteRoutes, withKitePaths} = require('kite-api/test/helpers/kite');
+const {fakeResponse} = require('kite-api/test/helpers/http');
 const KiteApp = require('../../lib/kite-app');
 const KiteStatusPanel = require('../../lib/elements/kite-status-panel');
-const {
-  fakeKiteInstallPaths, fakeResponse, withPlan, withKiteAuthenticated,
-  withRoutes, withKiteNotRunning, withKiteWhitelistedPaths,
-  withKiteNotAuthenticated,
-  withBothKiteNotRunning, withManyKiteNotRunning,
-  withManyOfBothKiteNotRunning,
-} = require('../spec-helpers');
+const {withPlan} = require('../spec-helpers');
 const {click} = require('../helpers/events');
 
 describe('KiteStatusPanel', () => {
-  fakeKiteInstallPaths();
 
   let status, app;
 
@@ -26,7 +20,7 @@ describe('KiteStatusPanel', () => {
     document.body.appendChild(status);
   });
 
-  withKiteAuthenticated(() => {
+  withKite({logged: true}, () => {
     withPlan('enterprise', {
       status: 'active',
       active_subscription: 'enterprise',
@@ -185,7 +179,7 @@ describe('KiteStatusPanel', () => {
     });
   });
 
-  withKiteNotRunning(() => {
+  withKite({running: false}, () => {
     beforeEach(() => {
       waitsForPromise(() => status.show());
     });
@@ -218,7 +212,13 @@ describe('KiteStatusPanel', () => {
     });
   });
 
-  withManyKiteNotRunning(() => {
+  withKite({
+    running: false,
+    allInstallPaths: [
+      '/path/to/app',
+      '/path/to/app2',
+    ],
+  }, () => {
     beforeEach(() => {
       waitsForPromise(() => status.show());
     });
@@ -241,13 +241,9 @@ describe('KiteStatusPanel', () => {
     });
   });
 
-  withKite({
-    runningEnterprise: false,
-    allInstallPaths: [],
-    allEnterpriseInstallPaths: ['/path/to/app'],
-  }, () => {
+  withKite({runningEnterprise: false}, () => {
     beforeEach(() => {
-      waitsForPromise(() => status.show());
+      waitsForPromise(() => status.show().catch(err => console.log(err)));
     });
 
     it('does not display the account status', () => {
@@ -280,7 +276,6 @@ describe('KiteStatusPanel', () => {
 
   withKite({
     runningEnterprise: false,
-    allInstallPaths: [],
     allEnterpriseInstallPaths: ['/path/to/app', '/path/to/app2'],
   }, () => {
     beforeEach(() => {
@@ -305,7 +300,10 @@ describe('KiteStatusPanel', () => {
     });
   });
 
-  withBothKiteNotRunning(() => {
+  withKite({
+    running: false,
+    runningEnterprise: false,
+  }, () => {
     beforeEach(() => {
       waitsForPromise(() => status.show());
     });
@@ -353,7 +351,12 @@ describe('KiteStatusPanel', () => {
     });
   });
 
-  withManyOfBothKiteNotRunning(() => {
+  withKite({
+    running: false,
+    runningEnterprise: false,
+    allInstallPaths: ['/path/to/app', '/path/to/app2'],
+    allEnterpriseInstallPaths: ['/path/to/enterprise/app', '/path/to/enterprise/app2'],
+  }, () => {
     beforeEach(() => {
       waitsForPromise(() => status.show());
     });
@@ -376,7 +379,7 @@ describe('KiteStatusPanel', () => {
     });
   });
 
-  withKiteNotAuthenticated(() => {
+  withKite({logged: false}, () => {
     withPlan('community that did not trialed Kite yet', {
       status: 'active',
       active_subscription: 'community',
@@ -417,95 +420,97 @@ describe('KiteStatusPanel', () => {
     });
   });
 
-  withKiteWhitelistedPaths(() => {
-    let editor;
-    withPlan('community that did not trialed Kite yet', {
-      status: 'active',
-      active_subscription: 'community',
-      features: {},
-      trial_days_remaining: 0,
-      started_kite_pro_trial: false,
-    }, () => {
-      describe('with a file not in the whitelist', () => {
-        beforeEach(() => {
-          app.kite = {
-            isEditorWhitelisted(e) { return false; },
-            notifications: {
-              pauseNotifications() {},
-              resumeNotifications() {},
-            },
-          };
+  withKite({logged: true}, () => {
+    withKitePaths({}, undefined, () => {
+      let editor;
+      withPlan('community that did not trialed Kite yet', {
+        status: 'active',
+        active_subscription: 'community',
+        features: {},
+        trial_days_remaining: 0,
+        started_kite_pro_trial: false,
+      }, () => {
+        describe('with a file not in the whitelist', () => {
+          beforeEach(() => {
+            app.kite = {
+              isEditorWhitelisted(e) { return false; },
+              notifications: {
+                pauseNotifications() {},
+                resumeNotifications() {},
+              },
+            };
 
-          waitsForPromise(() => atom.workspace.open('sample.py').then(e => editor = e));
-          waitsForPromise(() => status.show());
-        });
+            waitsForPromise(() => atom.workspace.open('sample.py').then(e => editor = e));
+            waitsForPromise(() => status.show());
+          });
 
-        it('displays actions to whitelist the file and access the settings', () => {
-          const state = status.querySelector('.status');
-
-          expect(state.querySelector('.text-warning').textContent)
-          .toEqual('Kite engine is not enabled for this file •');
-
-          const buttons = state.querySelectorAll('a');
-          const path = encodeURI(editor.getPath());
-          const url = `kite-atom-internal://open-copilot-permissions?filename=${path}`;
-
-          expect(buttons[0].href).toEqual(`kite-atom-internal://whitelist/${os.homedir()}`);
-          expect(buttons[0].textContent).toEqual(`Enable for ${os.homedir()}`);
-
-          expect(buttons[1].href).toEqual(url);
-          expect(buttons[1].textContent).toEqual('Whitelist settings…');
-        });
-
-        describe('clicking on the whitelist button', () => {
-          it('calls the whitelist endpoint', () => {
+          it('displays actions to whitelist the file and access the settings', () => {
             const state = status.querySelector('.status');
-            const button = state.querySelector('a');
 
-            spyOn(app, 'whitelist').andReturn(Promise.resolve());
-            click(button);
+            expect(state.querySelector('.text-warning').textContent)
+            .toEqual('Kite engine is not enabled for this file •');
 
-            expect(app.whitelist).toHaveBeenCalledWith(os.homedir());
+            const buttons = state.querySelectorAll('a');
+            const p = encodeURI(editor.getPath());
+            const url = `kite-atom-internal://open-copilot-permissions?filename=${p}`;
+
+            expect(buttons[0].href).toEqual(`kite-atom-internal://whitelist/${path.dirname(editor.getPath())}`);
+            expect(buttons[0].textContent).toEqual(`Enable for ${path.dirname(editor.getPath())}`);
+
+            expect(buttons[1].href).toEqual(url);
+            expect(buttons[1].textContent).toEqual('Whitelist settings…');
+          });
+
+          describe('clicking on the whitelist button', () => {
+            it('calls the whitelist endpoint', () => {
+              const state = status.querySelector('.status');
+              const button = state.querySelector('a');
+
+              spyOn(app, 'whitelist').andReturn(Promise.resolve());
+              click(button);
+
+              expect(app.whitelist).toHaveBeenCalledWith(path.dirname(editor.getPath()));
+            });
+          });
+
+          describe('clicking on the whitelist settings button', () => {
+            it('calls the whitelist endpoint', () => {
+              const state = status.querySelector('.status');
+              const button = state.querySelector('a:last-child');
+              const path = encodeURI(editor.getPath());
+              const url = `kite://settings/permissions?filename=${path}`;
+
+              spyOn(atom.applicationDelegate, 'openExternal');
+              click(button);
+
+              expect(atom.applicationDelegate.openExternal).toHaveBeenCalledWith(url);
+            });
           });
         });
 
-        describe('clicking on the whitelist settings button', () => {
-          it('calls the whitelist endpoint', () => {
-            const state = status.querySelector('.status');
-            const button = state.querySelector('a:last-child');
-            const path = encodeURI(editor.getPath());
-            const url = `kite://settings/permissions?filename=${path}`;
+        describe('when the user has a verified email', () => {
+          beforeEach(() => {
+            waitsForPromise(() => status.show());
+          });
 
-            spyOn(atom.applicationDelegate, 'openExternal');
-            click(button);
-
-            expect(atom.applicationDelegate.openExternal).toHaveBeenCalledWith(url);
+          it('does not display a verification warning', () => {
+            expect(status.querySelector('.kite-warning-box')).not.toExist();
           });
         });
-      });
 
-      describe('when the user has a verified email', () => {
-        beforeEach(() => {
-          waitsForPromise(() => status.show());
-        });
+        describe('when the user has an unverified email', () => {
+          withKiteRoutes([[
+            o => /^\/api\/account\/user/.test(o.path),
+            o => fakeResponse(200, JSON.stringify({email_verified: false})),
+          ]]);
 
-        it('does not display a verification warning', () => {
-          expect(status.querySelector('.kite-warning-box')).not.toExist();
-        });
-      });
+          beforeEach(() => {
+            waitsForPromise(() => status.show());
+          });
 
-      describe('when the user has an unverified email', () => {
-        withRoutes([[
-          o => /^\/api\/account\/user/.test(o.path),
-          o => fakeResponse(200, JSON.stringify({email_verified: false})),
-        ]]);
-
-        beforeEach(() => {
-          waitsForPromise(() => status.show());
-        });
-
-        it('displays a verification warning', () => {
-          expect(status.querySelector('.kite-warning-box')).toExist();
+          it('displays a verification warning', () => {
+            expect(status.querySelector('.kite-warning-box')).toExist();
+          });
         });
       });
     });

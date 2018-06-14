@@ -5,6 +5,7 @@ const http = require('http');
 const proc = require('child_process');
 const Plan = require('../lib/plan');
 const {merge} = require('../lib/utils');
+const {withKiteRoutes} = require('kite-api/test/helpers/kite');
 
 beforeEach(function() {
   atom.config.set('kite.loggingLevel', 'error');
@@ -613,7 +614,7 @@ function withRoutes(routes) {
 
 function withPlan(description, plan, block) {
   describe(description, () => {
-    withRoutes([
+    withKiteRoutes([
       [
         o => o.path.indexOf('/clientapi/plan') === 0,
         o => fakeResponse(200, JSON.stringify(plan)),

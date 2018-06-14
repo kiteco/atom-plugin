@@ -1,32 +1,32 @@
 'use strict';
 
 const Plan = require('../lib/plan.js');
-const {withFakeServer, fakeResponse} = require('./spec-helpers');
+const {fakeResponse} = require('kite-api/test/helpers/http');
+const {withKite, withKiteRoutes} = require('kite-api/test/helpers/kite');
 
-xdescribe('Plan', () => {
-  afterEach(() => {
-    Plan.clearPlanData();
-  });
-  withFakeServer([[
-    o => /\/clientapi\/plan/.test(o.path),
-    o => fakeResponse(200, JSON.stringify({
-      name: 'unknown',
-      status: 'active',
-      active_subscription: 'unknown',
-      features: {
-        drill_down: false,
-        foo: true,
-      },
-    })),
-  ]], () => {
-    beforeEach(() => {
-      waitsForPromise(() => Plan.queryPlan());
-    });
-    describe('.can()', () => {
-      it('returns a boolean of the feature permission', () => {
-        expect(Plan.can('drill_down')).toBeFalsy();
-        expect(Plan.can('foo')).toBeTruthy();
-        expect(Plan.can('bar')).toBeFalsy();
+describe('Plan', () => {
+  withKite({reachable: true}, () => {
+    withKiteRoutes([[
+      o => /\/clientapi\/plan/.test(o.path),
+      o => fakeResponse(200, JSON.stringify({
+        name: 'unknown',
+        status: 'active',
+        active_subscription: 'unknown',
+        features: {
+          drill_down: false,
+          foo: true,
+        },
+      })),
+    ]], () => {
+      beforeEach(() => {
+        waitsForPromise(() => Plan.queryPlan());
+      });
+      describe('.can()', () => {
+        it('returns a boolean of the feature permission', () => {
+          expect(Plan.can('drill_down')).toBeFalsy();
+          expect(Plan.can('foo')).toBeTruthy();
+          expect(Plan.can('bar')).toBeFalsy();
+        });
       });
     });
   });
