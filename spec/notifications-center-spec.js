@@ -1,6 +1,7 @@
 'use strict';
 
 const os = require('os');
+const {withKite} = require('kite-api/test/helpers/kite');
 
 // const {StateController} = require('kite-installer');
 const NotificationsCenter = require('../lib/notifications-center');
@@ -67,7 +68,7 @@ describe('NotificationsCenter', () => {
     });
 
     describe('and no notifications have been displayed before', () => {
-      describe('when kite is not supported', () => {
+      withKite({supported: false}, () => {
         beforeEach(() => {
           spyOn(os, 'platform').andReturn('wtfOS');
 

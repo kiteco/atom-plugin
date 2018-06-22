@@ -1,14 +1,15 @@
 'use strict';
 
 const os = require('os');
+const {withKite} = require('kite-api/test/helpers/kite');
 const KiteApp = require('../../lib/kite-app');
 const KiteStatusPanel = require('../../lib/elements/kite-status-panel');
 const {
   fakeKiteInstallPaths, fakeResponse, withPlan, withKiteAuthenticated,
   withRoutes, withKiteNotRunning, withKiteWhitelistedPaths,
-  withKiteNotAuthenticated, withKiteEnterpriseNotRunning,
+  withKiteNotAuthenticated,
   withBothKiteNotRunning, withManyKiteNotRunning,
-  withManyKiteEnterpriseNotRunning, withManyOfBothKiteNotRunning,
+  withManyOfBothKiteNotRunning,
 } = require('../spec-helpers');
 const {click} = require('../helpers/events');
 
@@ -240,7 +241,11 @@ describe('KiteStatusPanel', () => {
     });
   });
 
-  withKiteEnterpriseNotRunning(() => {
+  withKite({
+    runningEnterprise: false,
+    allInstallPaths: [],
+    allEnterpriseInstallPaths: ['/path/to/app'],
+  }, () => {
     beforeEach(() => {
       waitsForPromise(() => status.show());
     });
@@ -273,7 +278,11 @@ describe('KiteStatusPanel', () => {
     });
   });
 
-  withManyKiteEnterpriseNotRunning(() => {
+  withKite({
+    runningEnterprise: false,
+    allInstallPaths: [],
+    allEnterpriseInstallPaths: ['/path/to/app', '/path/to/app2'],
+  }, () => {
     beforeEach(() => {
       waitsForPromise(() => status.show());
     });

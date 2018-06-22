@@ -149,7 +149,7 @@ describe('KiteApp', () => {
       spy = jasmine.createSpy();
       workspaceElement = atom.views.getView(atom.workspace);
       jasmineContent = document.querySelector('#jasmine-content');
-      AccountManager.initClient('localhost', 46654);
+      // AccountManager.initClient('localhost', 46654);
 
       jasmineContent.appendChild(workspaceElement);
 
