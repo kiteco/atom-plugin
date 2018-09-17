@@ -9,10 +9,12 @@ kite-signature {
   max-width: 30em;
   min-width: 20em;
   position: absolute;
-  transform: translate(0, calc(-100% - 16px));
+  transform: translate(0, -100%);
+  top: -20px;
 
   &.upside-down {
     transform: translate(0, 0);
+    top: 0px;
   }
 
   .kite-content;
