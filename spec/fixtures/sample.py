@@ -54,7 +54,8 @@ if True:
 else:
     test = A('foo')
 
-test.increment(2, delta=5)
+test.increment(2,
+               delta=5)
 test.increment('bar')
 test.increment('baz')
 test.increment(False) if True else test.increment(True)
