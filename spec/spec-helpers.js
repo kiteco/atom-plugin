@@ -9,6 +9,7 @@ const {withKiteRoutes} = require('kite-api/test/helpers/kite');
 const KiteAPI = require('kite-api');
 
 beforeEach(function() {
+  atom.config.set('core.useTreeSitterParsers', false);
   atom.config.set('kite.loggingLevel', 'error');
   atom.config.set('kite.showEditorVacanciesNotificationOnStartup', false);
   atom.config.set('kite.showWelcomeNotificationOnStartup', false);
