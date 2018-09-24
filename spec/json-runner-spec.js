@@ -106,11 +106,9 @@ function buildTest(data, file) {
         });
 
         waitsForPromise({label: 'kite activation'}, () => atom.packages.activatePackage('kite'));
-        // console.log('start ------------------------------------------');
       });
 
       afterEach(() => {
-        // console.log('end ------------------------------------------');
       });
       const block = () => {
         data.test.reverse().reduce((f, s) => {

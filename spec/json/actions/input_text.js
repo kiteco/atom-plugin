@@ -10,6 +10,13 @@ module.exports = (action) => {
       } else {
         editor.insertText(action.properties.text);
       }
+      emitCompletionEvent();
+    }
+
+    function emitCompletionEvent() {
+      const view = atom.views.getView(editor);
+      const event = new CustomEvent('autocomplete-plus:activate', {bubbles: true, cancelable: true});
+      view.dispatchEvent(event);
     }
   });
 };
