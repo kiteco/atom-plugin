@@ -2,7 +2,7 @@
 
 const os = require('os');
 const KiteAPI = require('kite-api');
-const {withKite, withKiteAccountRoutes} = require('kite-api/test/helpers/kite');
+const {withKite, withKiteRoutes} = require('kite-api/test/helpers/kite');
 const {fakeResponse} = require('kite-api/test/helpers/http');
 
 const KiteApp = require('../lib/kite-app');
@@ -182,9 +182,9 @@ describe('KiteApp', () => {
         });
 
         describe('with all the data but an invalid email', () => {
-          withKiteAccountRoutes([
+          withKiteRoutes([
             [
-              o => /\/api\/account\/login/.test(o.path),
+              o => /\/clientapi\/login/.test(o.path),
               o => fakeResponse(401, JSON.stringify({code: 6})),
             ],
           ], () => {
@@ -208,9 +208,9 @@ describe('KiteApp', () => {
         });
 
         describe('for an unauthorized account', () => {
-          withKiteAccountRoutes([
+          withKiteRoutes([
             [
-              o => /\/api\/account\/login/.test(o.path),
+              o => /\/clientapi\/login/.test(o.path),
               o => fakeResponse(401, JSON.stringify({code: 1})),
             ],
           ], () => {
@@ -234,9 +234,9 @@ describe('KiteApp', () => {
         });
 
         describe('for a passwordless account', () => {
-          withKiteAccountRoutes([
+          withKiteRoutes([
             [
-              o => /\/api\/account\/login/.test(o.path),
+              o => /\/clientapi\/login/.test(o.path),
               o => fakeResponse(401, JSON.stringify({code: 9})),
             ],
           ], () => {
@@ -264,9 +264,9 @@ describe('KiteApp', () => {
         });
 
         describe('with valid data', () => {
-          withKiteAccountRoutes([
+          withKiteRoutes([
             [
-              o => /\/api\/account\/login/.test(o.path),
+              o => /\/clientapi\/login/.test(o.path),
               o => fakeResponse(200),
             ],
           ], () => {
