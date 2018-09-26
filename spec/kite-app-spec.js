@@ -326,15 +326,15 @@ describe('KiteApp', () => {
 
     describe('.authenticate()', () => {
       beforeEach(() => {
-        spyOn(KiteAPI.Account, 'login').andCallFake(() => Promise.resolve());
+        spyOn(KiteAPI, 'login').andCallFake(() => Promise.resolve());
       });
 
-      it('calls the KiteAPI.Account.login method', () => {
+      it('calls the KiteAPI.login method', () => {
         const data = {};
 
         app.authenticate(data);
 
-        expect(KiteAPI.Account.login).toHaveBeenCalledWith(data);
+        expect(KiteAPI.login).toHaveBeenCalledWith(data);
       });
     });
 
