@@ -172,7 +172,9 @@ xdescribe('error rescue', () => {
                 withKiteRoutes([
                   [
                     o => /^\/clientapi\/editor\/autocorrect$/.test(o.path),
-                    o => fakeResponse(200, fs.readFileSync(path.resolve(projectPath, 'autocorrect-fixed-no-fixes.json'))),
+                    o => fakeResponse(200,
+                          fs.readFileSync(
+                            path.resolve(projectPath, 'autocorrect-fixed-no-fixes.json'))),
                   ],
                 ]);
 
@@ -312,7 +314,9 @@ xdescribe('error rescue', () => {
                 withKiteRoutes([
                   [
                     o => /^\/clientapi\/editor\/autocorrect$/.test(o.path),
-                    o => fakeResponse(200, fs.readFileSync(path.resolve(projectPath, 'autocorrect-fixed-no-fixes.json'))),
+                    o => fakeResponse(200,
+                          fs.readFileSync(
+                            path.resolve(projectPath, 'autocorrect-fixed-no-fixes.json'))),
                   ],
                 ]);
 

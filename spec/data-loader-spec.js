@@ -1,7 +1,6 @@
 'use strict';
 
 const url = require('url');
-const md5 = require('md5');
 const path = require('path');
 const KiteAPI = require('kite-api');
 const {fakeResponse} = require('kite-api/test/helpers/http');
@@ -12,11 +11,8 @@ const DataLoader = require('../lib/data-loader');
 const projectPath = path.join(__dirname, 'fixtures');
 
 describe('DataLoader', () => {
-  let editor;
   beforeEach(() => {
-    waitsForPromise(() => atom.workspace.open('sample.py').then(e => {
-      editor = e;
-    }));
+    waitsForPromise(() => atom.workspace.open('sample.py'));
   });
 
   beforeEach(() => {
@@ -214,12 +210,3 @@ describe('DataLoader', () => {
     });
   });
 });
-
-function parseParams(queryString) {
-  return queryString
-    ? queryString.split('&').map(p => p.split('=')).reduce((m, [k, v]) => {
-      m[k] = v;
-      return m;
-    }, {})
-    : {};
-}

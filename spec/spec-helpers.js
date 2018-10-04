@@ -46,24 +46,32 @@ beforeEach(function() {
 
       if (payloadKeys.length !== expectedKeys.length) {
         this.message = () =>
-          `Expected ${this.actual.methodName} to have been called with payload containing '${expectedKeys}' but payload had '${payloadKeys}'`;
+          `Expected ${
+            this.actual.methodName
+          } to have been called with payload containing '${expectedKeys}' but payload had '${payloadKeys}'`;
         return false;
       }
 
       if (!payloadKeys.every(k => expectedKeys.includes(k))) {
         this.message = () =>
-        `Expected ${this.actual.methodName} to have been called with payload containing '${expectedKeys}' but payload had '${payloadKeys}'`;
+        `Expected ${
+          this.actual.methodName
+        } to have been called with payload containing '${expectedKeys}' but payload had '${payloadKeys}'`;
         return false;
       }
 
       if (!this.env.equals_(expected, payload)) {
         this.message = () =>
-        `Expected ${this.actual.methodName} to have been called with payload '${JSON.stringify(expected)}' but it was with '${JSON.stringify(payload)}'`;
+        `Expected ${
+          this.actual.methodName
+        } to have been called with payload '${JSON.stringify(expected)}' but it was with '${JSON.stringify(payload)}'`;
         return false;
       }
 
       this.message = () =>
-        `Expected ${this.actual.methodName} to have been called with payload '${JSON.stringify(expected)}'`;
+        `Expected ${
+          this.actual.methodName
+        } to have been called with payload '${JSON.stringify(expected)}'`;
       return true;
     },
   });

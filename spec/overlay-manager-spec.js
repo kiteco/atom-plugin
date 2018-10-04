@@ -25,8 +25,6 @@ describe('OverlayManager', () => {
 
   const editorQuery = (selector) => editorElement.querySelector(selector);
 
-  const editorQueryAll = (selector) => editorElement.querySelectorAll(selector);
-
   beforeEach(() => {
     spyOn(KiteAPI, 'request').andCallThrough();
 
