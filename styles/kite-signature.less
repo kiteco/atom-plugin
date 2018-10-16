@@ -6,8 +6,7 @@ kite-signature {
   padding: @component-padding;
   background: @app-background-color;
   font-family: @font-family;
-  max-width: 50em;
-  min-width: 40em;
+  width: 40em;
   position: absolute;
   transform: translate(0, -100%);
   top: -20px;
@@ -16,6 +15,11 @@ kite-signature {
   &.upside-down {
     transform: translate(0, 0);
     top: 0px;
+  }
+
+  &.fixed {
+    transform: translate(0, 0);
+    position: fixed;
   }
 
   .kite-content;

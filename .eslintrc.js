@@ -9,5 +9,6 @@ module.exports = {
     fffit: false,
     ffdescribe: false,
     fffdescribe: false,
+    ResizeObserver: false,
   }
 };
