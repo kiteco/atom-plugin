@@ -1,12 +1,18 @@
 @import "variables";
 @import "content";
 
+autocomplete-suggestion-list[no-documentation] {
+  .suggestion-description {
+    display: none;
+    overflow-y: auto !important;
+  }
+}
+
 kite-signature {
   display: block;
   padding: @component-padding;
   background: @app-background-color;
   font-family: @font-family;
-  max-width: 30em;
   min-width: 20em;
 
   .kite-content;
@@ -18,6 +24,10 @@ kite-signature {
 
   .kite-signature-wrapper {
     margin: 0;
+
+    .name, .kwargs, .patterns {
+      max-width: 30em;
+    }
   }
 
   pre {
@@ -61,10 +71,6 @@ kite-signature {
   .parameter-highlight a .parameter-name,
   a .parameter-name{
     color: @text-color-info;
-  }
-
-  &[no-documentation] + .suggestion-description {
-    display: none !important;
   }
 
   section.kwargs {
