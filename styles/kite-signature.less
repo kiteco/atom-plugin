@@ -1,21 +1,83 @@
 @import "variables";
 @import "content";
 
-autocomplete-suggestion-list[no-documentation] {
+autocomplete-suggestion-list[no-documentation],
+autocomplete-suggestion-list[collapse-documentation] {
   .suggestion-description {
-    display: none;
+    display: none !important;
+  }
+}
+
+autocomplete-suggestion-list {
+  .suggestion-description {
     overflow-y: auto !important;
+  }
+}
+
+.suggestion-description:empty + kite-signature {
+  padding-top: @component-padding;
+
+  .kite-docs-collapser {
+    display: none;
+  }
+}
+
+autocomplete-suggestion-list[collapse-documentation] kite-signature {
+  .kite-docs-collapser {
+    .expand {
+      display: inline;
+    }
+    .collapse {
+      display: none;
+    }
+    i::before {
+      transform: rotate(180deg);
+    }
   }
 }
 
 kite-signature {
   display: block;
-  padding: @component-padding;
+  padding: (@component-padding + 20px) @component-padding @component-padding;
   background: @app-background-color;
   font-family: @font-family;
   min-width: 20em;
+  position: relative;
 
   .kite-content;
+
+  .kite-docs-collapser {
+    display: block;
+    height: 20px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    background: darken(@overlay-background-color, 4%);
+    font-size: 11px;
+    text-transform: uppercase;
+    color: @text-color;
+    padding-left: @component-padding;
+
+    a {
+      text-decoration: none;
+    }
+
+    i::before {
+      transition: transform 0.2s;
+      transform-origin: center center;
+      line-height: 0.8em;
+      text-align: center;
+    }
+
+    i, i::before, span {
+      vertical-align: middle;
+    }
+
+    .expand {
+      display: none;
+    }
+  }
 
   h4 {
     font-size: 0.9em;

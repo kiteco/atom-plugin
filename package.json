@@ -56,7 +56,7 @@
     },
     "hideDocumentationWhenSignatureIsAvailable": {
       "type": "boolean",
-      "default": true,
+      "default": false,
       "title": "Hide documentation when signature is available",
       "description": "Display only signature if both the signature and documentation are available at the same time"
     },
