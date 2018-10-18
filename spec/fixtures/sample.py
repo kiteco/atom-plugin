@@ -18,7 +18,7 @@ engine = sqlalchemy.create_engine()
 
 sqlalchemy.ext.declarative.api.declarative_base
 
-json.dump
+json.dumps()
 
 boto.s3.connection.S3Connection()
 
