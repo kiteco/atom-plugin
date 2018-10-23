@@ -87,6 +87,21 @@ atom-text-editor .kite-hyperclick {
   }
 }
 
+.kite-completions .suggestion-description-content {
+  white-space: normal !important;
+  overflow: visible;
+
+  .kite-completion-description {
+    max-width: 600px;
+    line-height: 1.7;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+  }
+}
+
+
 .kite-completions {
   .kite-docs-collapser {
     white-space: nowrap;
@@ -137,15 +152,6 @@ atom-text-editor .kite-hyperclick {
       }
     }
   }
-}
-
-.kite-completion-description {
-  max-width: 600px;
-  line-height: 1.7;
-  overflow: hidden;
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;
 }
 
 .flex-separator {
