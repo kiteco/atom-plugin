@@ -87,6 +87,58 @@ atom-text-editor .kite-hyperclick {
   }
 }
 
+.kite-completions {
+  .kite-docs-collapser {
+    white-space: nowrap;
+    padding: 0;
+
+    a {
+      text-decoration: none;
+    }
+
+    i::before {
+      transition: transform 0.2s;
+      transform-origin: center center;
+      line-height: 0.8em;
+      text-align: center;
+    }
+
+    i, i::before, span {
+      vertical-align: middle;
+    }
+
+    .expand {
+      display: none;
+    }
+  }
+
+  &.collapse-documentation {
+    .kite-completion-description {
+      display: none;
+    }
+
+    kite-links {
+      margin-top: 3px;
+
+      a:not(.kite-docs-collapser) {
+        display: none;
+      }
+    }
+
+    .kite-docs-collapser {
+      .expand {
+        display: inline;
+      }
+      .collapse {
+        display: none;
+      }
+      i::before {
+        transform: rotate(180deg);
+      }
+    }
+  }
+}
+
 .kite-completion-description {
   max-width: 600px;
   line-height: 1.7;
