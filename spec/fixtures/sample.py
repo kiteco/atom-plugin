@@ -1,7 +1,5 @@
 variable = 10
 
-json.dumps()
-
 def hello():
     print("Hello World!")
 
