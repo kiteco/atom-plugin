@@ -2,7 +2,7 @@
   "name": "kite",
   "main": "./lib/kite",
   "version": "0.131.0",
-  "description": "Python programming copilot — Kite shows cloud-powered completions, documentation, and examples.",
+  "description": "Python programming copilot — Kite shows AI-powered completions, documentation, and examples.",
   "repository": "https://github.com/kiteco/atom-plugin",
   "keywords": [],
   "license": "SEE LICENSE IN LICENSE",
