@@ -208,7 +208,7 @@ describe('NotificationsCenter', () => {
             expect(options.buttons[0].text).toEqual('Login');
             expect(options.dismissable).toBeTruthy();
             expect(options.description)
-            .toEqual('Kite needs to be authenticated to access the index of your code stored on the cloud.');
+            .toEqual('Kite needs to be authenticated to analyze your code.');
           });
 
           describe('clicking on the Login button', () => {
