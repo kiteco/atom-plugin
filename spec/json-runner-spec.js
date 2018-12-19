@@ -35,6 +35,7 @@ describe('JSON tests', () => {
     jasmineContent.appendChild(workspaceElement);
 
     atom.config.set('autocomplete-plus.enableAutoActivation', true);
+    atom.config.set('autocomplete-plus.enableAutoConfirmSingleSuggestion', false);
     atom.config.set('autocomplete-plus.autoActivationDelay', 0);
 
     waitsForPromise({
