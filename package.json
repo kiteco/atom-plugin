@@ -33,6 +33,12 @@
       "title": "Enable hover",
       "description": "Show a quick summary of a symbol when you hover your mouse over it."
     },
+    "enableSnippets": {
+      "type": "boolean",
+      "default": false,
+      "title": "Enable snippets",
+      "description": "Enable snippets feature (Experimental)"
+    },
     "maxVisibleSuggestionsAlongSignature": {
       "type": "integer",
       "default": 5,
