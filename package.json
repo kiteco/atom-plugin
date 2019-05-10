@@ -13,9 +13,9 @@
     "lint": "eslint .",
     "lint:fix": "eslint --fix .",
     "build-prod": "webpack --config config/webpack.config.js --mode production",
-    "prepublish": "rm -rf node_modules && rm package-lock.json && apm install && rm -rf dist && npm run build-prod",
+    "prepublishOnly": "rm -rf node_modules && rm -f package-lock.json && apm install && rm -rf dist && npm run build-prod",
     "build-dev": "webpack --config config/webpack.config.js --mode none",
-    "clean-dev-install": "apm unlink && rm -rf node_modules && rm package-lock.json && apm install && rm -rf dist && npm run build-dev && apm link"
+    "clean-dev-install": "apm unlink && rm -rf node_modules && rm -f package-lock.json && apm install && rm -rf dist && npm run build-dev && apm link"
   },
   "configSchema": {
     "showWelcomeNotificationOnStartup": {
