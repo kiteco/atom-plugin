@@ -1,7 +1,7 @@
 {
   "name": "kite",
   "main": "./dist/main",
-  "version": "0.154.0",
+  "version": "0.157.0",
   "description": "Python coding assistant featuring AI-powered autocompletions, advanced function signatures, and instant documentation",
   "repository": "https://github.com/kiteco/atom-plugin",
   "keywords": [],
@@ -35,6 +35,12 @@
       "default": true,
       "title": "Enable hover",
       "description": "Show a quick summary of a symbol when you hover your mouse over it."
+    },
+    "enableSnippets": {
+      "type": "boolean",
+      "default": false,
+      "title": "Enable snippets",
+      "description": "Enable snippets feature (Experimental)"
     },
     "maxVisibleSuggestionsAlongSignature": {
       "type": "integer",
