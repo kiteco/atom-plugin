@@ -2,8 +2,8 @@
 
 const fs = require('fs');
 const path = require('path');
-const {withKite, withKiteRoutes} = require('kite-api/test/helpers/kite');
-const {fakeResponse} = require('kite-api/test/helpers/http');
+const { withKite, withKiteRoutes } = require('kite-api/test/helpers/kite');
+const { fakeResponse } = require('kite-api/test/helpers/http');
 const completions = require('../lib/completions');
 
 const projectPath = path.join(__dirname, 'fixtures');
@@ -27,34 +27,30 @@ describe('signature + completion', () => {
     delete completions.suggestionListElement;
   });
 
-  withKite({reachable: true}, () => {
-    withKiteRoutes([
-      [
-        o => o.path === '/clientapi/editor/completions',
-        o => fakeResponse(200, String(fs.readFileSync(path.join(projectPath, 'completions.json')))),
-      ], [
-        o => o.path === '/clientapi/editor/signatures',
-        o => fakeResponse(200, String(fs.readFileSync(path.join(projectPath, 'dumps-signature.json')))),
-      ],
+  withKite({ reachable: true }, () => {
+    withKiteRoutes([[
+      o => o.path === '/clientapi/editor/signatures',
+      o => fakeResponse(200, String(fs.readFileSync(path.join(projectPath, 'dumps-signature.json')))),
+    ],
     ]);
 
     beforeEach(() => {
       waitsForPromise('package activation', () =>
-      atom.packages.activatePackage('kite').then(pkg => {
-        Kite = pkg.mainModule;
+        atom.packages.activatePackage('kite').then(pkg => {
+          Kite = pkg.mainModule;
 
-        spyOn(completions, 'loadSignature').andCallThrough();
-        spyOn(completions, 'clearSignature').andCallThrough();
-      }));
+          spyOn(completions, 'loadSignature').andCallThrough();
+          spyOn(completions, 'clearSignature').andCallThrough();
+        }));
 
       waitsForPromise('open editor', () =>
-      atom.workspace.open(path.join(projectPath, 'json.py')).then(e => {
-        editor = e;
-        editorView = atom.views.getView(editor);
-      }));
+        atom.workspace.open(path.join(projectPath, 'json.py')).then(e => {
+          editor = e;
+          editorView = atom.views.getView(editor);
+        }));
 
       waitsFor('kite editor', () =>
-      Kite.getModule('editors').kiteEditorForEditor(editor));
+        Kite.getModule('editors').kiteEditorForEditor(editor));
 
       runs(() => {
         editor.setCursorBufferPosition([2, Number.POSITIVE_INFINITY]);
