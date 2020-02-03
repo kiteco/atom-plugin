@@ -18,6 +18,12 @@
     "clean-dev-install": "apm unlink && rm -rf node_modules && rm -f package-lock.json && apm install && rm -rf dist && npm run build-dev && apm link"
   },
   "configSchema": {
+    "showJSBetaNotification": {
+      "type": "boolean",
+      "default": true,
+      "title": "Show JavaScript beta notification",
+      "description": "Whether or not to show the JavaScript beta notification."
+    },
     "showGoBetaNotification": {
       "type": "boolean",
       "default": true,

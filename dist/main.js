@@ -245,7 +245,7 @@ const Kite = module.exports = {
     // Removing old configuration options
 
     const kiteCfg = atom.config.getAll('kite');
-    const validKeys = ['showGoBetaNotification', 'showWelcomeNotificationOnStartup', 'enableCompletions', 'enableHoverUI', 'enableSnippets', 'maxVisibleSuggestionsAlongSignature', 'loggingLevel', 'pollingInterval', 'developerMode', 'startKiteAtStartup'];
+    const validKeys = ['showJSBetaNotification', 'showGoBetaNotification', 'showWelcomeNotificationOnStartup', 'enableCompletions', 'enableHoverUI', 'enableSnippets', 'maxVisibleSuggestionsAlongSignature', 'loggingLevel', 'pollingInterval', 'developerMode', 'startKiteAtStartup'];
 
     if (kiteCfg.length) {
       const kiteCfgKeys = Object.keys(kiteCfg[0].value);
@@ -24176,6 +24176,7 @@ class NotificationsCenter {
     this.lastShown = {};
     this.queue = new NotificationQueue();
     this.hasSeenGoBetaNotification = false;
+    this.hasSeenJSBetaNotification = false;
     this.subscriptions.add(app.onDidGetState(({
       state,
       canNotify
@@ -24309,6 +24310,37 @@ class NotificationsCenter {
     });
     this.queue.onDidNotify(_ => {
       this.hasSeenGoBetaNotification = true;
+    });
+  }
+
+  showJSBetaNotification(kite) {
+    if (this.hasSeenJSBetaNotification || !atom.config.get('kite.showJSBetaNotification')) {
+      return;
+    }
+
+    this.queue.addInfo('Welcome to the Kite for JavaScript Beta!', {
+      dismissable: true,
+      description: 'You\'ve got early access to our line-of-code completions for JavaScript, powered by machine learning. If you\'d like to disable the beta, you can do so in the Copilot.',
+      buttons: [{
+        text: 'Open Copilot',
+
+        onDidClick(dismiss) {
+          kite.openCopilot();
+          dismiss && dismiss();
+        }
+
+      }, {
+        text: 'Hide Forever',
+
+        onDidClick(dismiss) {
+          atom.config.set('kite.showJSBetaNotification', false);
+          dismiss && dismiss();
+        }
+
+      }]
+    });
+    this.queue.onDidNotify(_ => {
+      this.hasSeenJSBetaNotification = true;
     });
   }
 
@@ -25015,7 +25047,7 @@ if (!atom.inSpecMode()) {
 /* 176 */
 /***/ (function(module) {
 
-module.exports = JSON.parse("{\"name\":\"kite\",\"main\":\"./dist/main\",\"version\":\"0.177.0\",\"description\":\"Python coding assistant featuring AI-powered autocompletions, advanced function signatures, and instant documentation\",\"repository\":\"https://github.com/kiteco/atom-plugin\",\"keywords\":[],\"license\":\"SEE LICENSE IN LICENSE\",\"engines\":{\"atom\":\">=1.0.0 <2.0.0\"},\"scripts\":{\"lint\":\"eslint .\",\"lint:fix\":\"eslint --fix .\",\"build-prod\":\"webpack --config config/webpack.config.js --mode production\",\"prepublishOnly\":\"rm -rf node_modules && rm -f package-lock.json && apm install && rm -rf dist && npm run build-prod\",\"build-dev\":\"webpack --config config/webpack.config.js --mode none\",\"clean-dev-install\":\"apm unlink && rm -rf node_modules && rm -f package-lock.json && apm install && rm -rf dist && npm run build-dev && apm link\"},\"configSchema\":{\"showGoBetaNotification\":{\"type\":\"boolean\",\"default\":true,\"title\":\"Show Go beta notification\",\"description\":\"Whether or not to show the Go beta notification.\"},\"showWelcomeNotificationOnStartup\":{\"type\":\"boolean\",\"default\":true,\"title\":\"Show welcome notification on startup\",\"description\":\"Whether or not to show the Kite welcome notification on startup.\"},\"enableCompletions\":{\"type\":\"boolean\",\"default\":true,\"title\":\"Enable completions\",\"description\":\"Automatically show completions from Kite as you type.\"},\"enableHoverUI\":{\"type\":\"boolean\",\"default\":true,\"title\":\"Enable hover\",\"description\":\"Show a quick summary of a symbol when you hover your mouse over it.\"},\"enableSnippets\":{\"type\":\"boolean\",\"default\":true,\"title\":\"Enable snippets\",\"description\":\"Enable snippets feature.\"},\"maxVisibleSuggestionsAlongSignature\":{\"type\":\"integer\",\"default\":5,\"title\":\"Completions limit with function signature\",\"description\":\"Maximum number of completions that can be shown when a function signature is also shown.\"},\"loggingLevel\":{\"type\":\"string\",\"default\":\"info\",\"enum\":[\"silly\",\"verbose\",\"debug\",\"info\",\"warning\",\"error\"],\"title\":\"Logging level\",\"description\":\"The verbosity level of Kite logs.\"},\"pollingInterval\":{\"type\":\"integer\",\"default\":15000,\"min\":1000,\"max\":60000,\"title\":\"Polling interval\",\"description\":\"Interval in milliseconds at which the Kite package polls Kite Engine to get the status of the current file.\"},\"developerMode\":{\"type\":\"boolean\",\"default\":false,\"title\":\"Developer mode\",\"description\":\"Displays JSON data from Kite Engine that's used when rendering a UI element.\"},\"startKiteAtStartup\":{\"type\":\"boolean\",\"default\":true,\"title\":\"Start Kite Engine on startup\",\"description\":\"Automatically start Kite Engine on editor startup if it's not already running.\"},\"signatureKwargsVisible\":{\"type\":\"boolean\",\"default\":false,\"title\":\"Show function keyword arguments\",\"description\":\"Show inferred keyword arguments for a function when the function signature panel is shown\"},\"signaturePopularPatternsVisible\":{\"type\":\"boolean\",\"default\":false,\"title\":\"Show function call examples\",\"description\":\"Show examples on how to call a function when the function signature panel is shown\"}},\"providedServices\":{\"autocomplete.provider\":{\"versions\":{\"2.0.0\":\"completions\"}}},\"consumedServices\":{\"status-bar\":{\"versions\":{\"^1.0.0\":\"consumeStatusBar\"}}},\"dependencies\":{\"analytics-node\":\"^3.1.1\",\"element-resize-detector\":\"^1.1.11\",\"fuzzaldrin-plus\":\"^0.4.1\",\"getmac\":\"1.2.1\",\"kite-api\":\"=3.10.0\",\"kite-connector\":\"=3.4.0\",\"kite-installer\":\"=3.2.0\",\"lodash\":\"^4.17.11\",\"md5\":\"^2.2.0\",\"rollbar\":\"^2.3.8\",\"tiny-relative-date\":\"^1.3.0\",\"underscore-plus\":\"^1\"},\"devDependencies\":{\"@babel/core\":\"^7.4.3\",\"@babel/preset-env\":\"^7.4.3\",\"babel-eslint\":\"^6.1.2\",\"babel-loader\":\"^8.0.5\",\"editors-json-tests\":\"git://github.com/kiteco/editors-json-tests.git#master\",\"eslint\":\"^4.18.2\",\"eslint-config\":\"^0.3.0\",\"eslint-config-fbjs\":\"^1.1.1\",\"eslint-plugin-babel\":\"^3.3.0\",\"eslint-plugin-flowtype\":\"^2.29.1\",\"eslint-plugin-jasmine\":\"^2.2.0\",\"eslint-plugin-prefer-object-spread\":\"^1.1.0\",\"eslint-plugin-react\":\"^5.2.2\",\"fbjs\":\"^0.8.6\",\"javascript-obfuscator\":\"^0.8.3\",\"sinon\":\"^2.3.5\",\"webpack\":\"^4.30.0\",\"webpack-cli\":\"^3.3.0\"}}");
+module.exports = JSON.parse("{\"name\":\"kite\",\"main\":\"./dist/main\",\"version\":\"0.177.0\",\"description\":\"Python coding assistant featuring AI-powered autocompletions, advanced function signatures, and instant documentation\",\"repository\":\"https://github.com/kiteco/atom-plugin\",\"keywords\":[],\"license\":\"SEE LICENSE IN LICENSE\",\"engines\":{\"atom\":\">=1.0.0 <2.0.0\"},\"scripts\":{\"lint\":\"eslint .\",\"lint:fix\":\"eslint --fix .\",\"build-prod\":\"webpack --config config/webpack.config.js --mode production\",\"prepublishOnly\":\"rm -rf node_modules && rm -f package-lock.json && apm install && rm -rf dist && npm run build-prod\",\"build-dev\":\"webpack --config config/webpack.config.js --mode none\",\"clean-dev-install\":\"apm unlink && rm -rf node_modules && rm -f package-lock.json && apm install && rm -rf dist && npm run build-dev && apm link\"},\"configSchema\":{\"showJSBetaNotification\":{\"type\":\"boolean\",\"default\":true,\"title\":\"Show JavaScript beta notification\",\"description\":\"Whether or not to show the JavaScript beta notification.\"},\"showGoBetaNotification\":{\"type\":\"boolean\",\"default\":true,\"title\":\"Show Go beta notification\",\"description\":\"Whether or not to show the Go beta notification.\"},\"showWelcomeNotificationOnStartup\":{\"type\":\"boolean\",\"default\":true,\"title\":\"Show welcome notification on startup\",\"description\":\"Whether or not to show the Kite welcome notification on startup.\"},\"enableCompletions\":{\"type\":\"boolean\",\"default\":true,\"title\":\"Enable completions\",\"description\":\"Automatically show completions from Kite as you type.\"},\"enableHoverUI\":{\"type\":\"boolean\",\"default\":true,\"title\":\"Enable hover\",\"description\":\"Show a quick summary of a symbol when you hover your mouse over it.\"},\"enableSnippets\":{\"type\":\"boolean\",\"default\":true,\"title\":\"Enable snippets\",\"description\":\"Enable snippets feature.\"},\"maxVisibleSuggestionsAlongSignature\":{\"type\":\"integer\",\"default\":5,\"title\":\"Completions limit with function signature\",\"description\":\"Maximum number of completions that can be shown when a function signature is also shown.\"},\"loggingLevel\":{\"type\":\"string\",\"default\":\"info\",\"enum\":[\"silly\",\"verbose\",\"debug\",\"info\",\"warning\",\"error\"],\"title\":\"Logging level\",\"description\":\"The verbosity level of Kite logs.\"},\"pollingInterval\":{\"type\":\"integer\",\"default\":15000,\"min\":1000,\"max\":60000,\"title\":\"Polling interval\",\"description\":\"Interval in milliseconds at which the Kite package polls Kite Engine to get the status of the current file.\"},\"developerMode\":{\"type\":\"boolean\",\"default\":false,\"title\":\"Developer mode\",\"description\":\"Displays JSON data from Kite Engine that's used when rendering a UI element.\"},\"startKiteAtStartup\":{\"type\":\"boolean\",\"default\":true,\"title\":\"Start Kite Engine on startup\",\"description\":\"Automatically start Kite Engine on editor startup if it's not already running.\"},\"signatureKwargsVisible\":{\"type\":\"boolean\",\"default\":false,\"title\":\"Show function keyword arguments\",\"description\":\"Show inferred keyword arguments for a function when the function signature panel is shown\"},\"signaturePopularPatternsVisible\":{\"type\":\"boolean\",\"default\":false,\"title\":\"Show function call examples\",\"description\":\"Show examples on how to call a function when the function signature panel is shown\"}},\"providedServices\":{\"autocomplete.provider\":{\"versions\":{\"2.0.0\":\"completions\"}}},\"consumedServices\":{\"status-bar\":{\"versions\":{\"^1.0.0\":\"consumeStatusBar\"}}},\"dependencies\":{\"analytics-node\":\"^3.1.1\",\"element-resize-detector\":\"^1.1.11\",\"fuzzaldrin-plus\":\"^0.4.1\",\"getmac\":\"1.2.1\",\"kite-api\":\"=3.10.0\",\"kite-connector\":\"=3.4.0\",\"kite-installer\":\"=3.2.0\",\"lodash\":\"^4.17.11\",\"md5\":\"^2.2.0\",\"rollbar\":\"^2.3.8\",\"tiny-relative-date\":\"^1.3.0\",\"underscore-plus\":\"^1\"},\"devDependencies\":{\"@babel/core\":\"^7.4.3\",\"@babel/preset-env\":\"^7.4.3\",\"babel-eslint\":\"^6.1.2\",\"babel-loader\":\"^8.0.5\",\"editors-json-tests\":\"git://github.com/kiteco/editors-json-tests.git#master\",\"eslint\":\"^4.18.2\",\"eslint-config\":\"^0.3.0\",\"eslint-config-fbjs\":\"^1.1.1\",\"eslint-plugin-babel\":\"^3.3.0\",\"eslint-plugin-flowtype\":\"^2.29.1\",\"eslint-plugin-jasmine\":\"^2.2.0\",\"eslint-plugin-prefer-object-spread\":\"^1.1.0\",\"eslint-plugin-react\":\"^5.2.2\",\"fbjs\":\"^0.8.6\",\"javascript-obfuscator\":\"^0.8.3\",\"sinon\":\"^2.3.5\",\"webpack\":\"^4.30.0\",\"webpack-cli\":\"^3.3.0\"}}");
 
 /***/ }),
 /* 177 */
@@ -34302,6 +34334,8 @@ module.exports = {
 "use strict";
 
 
+const path = __webpack_require__(26);
+
 const {
   CompositeDisposable
 } = __webpack_require__(2);
@@ -34354,8 +34388,16 @@ module.exports = class KiteEditors {
       }
     }));
     this.subscriptions.add(atom.workspace.observeActiveTextEditor(editor => {
-      if (editor && editor.getGrammar().name === 'Go') {
-        this.Kite && this.Kite.notifications.showGoBetaNotification(this.Kite);
+      switch (editor && path.extname(editor.getFileName())) {
+        case '.go':
+          this.Kite && this.Kite.notifications.showGoBetaNotification(this.Kite);
+          break;
+
+        case '.js':
+        case '.jsx':
+        case '.vue':
+          this.Kite && this.Kite.notifications.showJSBetaNotification(this.Kite);
+          break;
       }
     }));
   }
