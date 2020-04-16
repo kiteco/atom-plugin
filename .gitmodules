@@ -1,0 +1,4 @@
+[submodule "lib/atom-snippets-fork"]
+	path = lib/atom-snippets-fork
+	url = git@github.com:kiteco/snippets.git
+	branch = master
