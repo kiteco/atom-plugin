@@ -1,0 +1,40 @@
+class User(object):
+     """ A representation of a user in this application."""
+     
+def_init_(self,username,email):
+    self.username = username
+    self.email = email
+    
+class AnonymousUser (user):
+    """An anonymous user; a stand-in for an actual user that nanethless 
+    is not an actual user.
+    """
+    
+    def _init_(self) :
+        self.user = None
+        self.email = None
+        
+     def_nonzero_(self):
+         return False
+         
+ import functools
+ 
+ def requires_user(func):
+      @functools.wraps(func)
+      def  inner(user,*args, **kwargs):
+           """Verify that the user is truthy; if so ,run the decoratedmethod,
+           and if not ,raise ValueError."""
+           # Ensure that user is truthy, and of the correct type.
+           # The truthy check will fail on anonymous users, since 
+           #AnonymousUser subclass has a _Nonezero_method that returns False.
+           if user and isinstance(user,User):
+           return func(user, *args,**kwargs)
+           else:
+                raise ValueError('A valid user is required to run this .')
+           return  inner.
+           
+           
+           
+         
+                   return func(user,*args
+           
