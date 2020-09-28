@@ -20192,6 +20192,7 @@ const KiteAPI = {
   STATES,
   emitter: new EventEmitter(),
   editorConfig: new EditorConfig(new MemoryStore()),
+  DEFAULT_MAX_FILE_SIZE: 1048576,
 
   toggleRequestDebug() {
     KiteConnector.toggleRequestDebug();
@@ -20221,6 +20222,10 @@ const KiteAPI = {
       path: `/clientapi/settings/${key}`,
       method: 'GET'
     });
+  },
+
+  getMaxFileSizeBytes() {
+    return KiteAPI.getKiteSetting('max_file_size_kb').then(res => res * Math.pow(2, 10)).catch(_ => this.DEFAULT_MAX_FILE_SIZE); // default to 1 MB
   },
 
   getSupportedLanguages() {
@@ -34433,30 +34438,36 @@ const DataLoader = {
       return Promise.resolve([]);
     }
 
-    const begin = buffer.characterIndexForPosition(ranges[0].start);
-    const end = buffer.characterIndexForPosition(ranges[0].end);
-    return KiteAPI.getCompletions({
-      text,
-      editor: 'atom',
-      filename: editor.getPath(),
-      position: {
-        begin,
-        end
-      },
-      offset_encoding: 'utf-16',
-      no_snippets: !yesSnippets
-    }).then(completions => {
-      var parsedCompletions = [];
-      completions.forEach(function (c) {
-        parsedCompletions.push(parseSnippetCompletion(editor, c, ''));
+    return KiteAPI.getMaxFileSizeBytes().then(max => {
+      if (text.length > max) {
+        return Promise.resolve([]);
+      }
 
-        if (c.children) {
-          c.children.forEach(function (child) {
-            parsedCompletions.push(parseSnippetCompletion(editor, child, String.fromCharCode(0x00A0).repeat(2)));
-          });
-        }
+      const begin = buffer.characterIndexForPosition(ranges[0].start);
+      const end = buffer.characterIndexForPosition(ranges[0].end);
+      return KiteAPI.getCompletions({
+        text,
+        editor: 'atom',
+        filename: editor.getPath(),
+        position: {
+          begin,
+          end
+        },
+        offset_encoding: 'utf-16',
+        no_snippets: !yesSnippets
+      }).then(completions => {
+        var parsedCompletions = [];
+        completions.forEach(c => {
+          parsedCompletions.push(parseSnippetCompletion(editor, c, ''));
+
+          if (c.children) {
+            c.children.forEach(child => {
+              parsedCompletions.push(parseSnippetCompletion(editor, child, String.fromCharCode(0x00A0).repeat(2)));
+            });
+          }
+        });
+        return parsedCompletions;
       });
-      return parsedCompletions;
     });
   },
 
@@ -34472,8 +34483,14 @@ const DataLoader = {
   getSignaturesAtPosition(editor, position) {
     const buffer = editor.getBuffer();
     const text = buffer.getText();
-    const cursorPosition = buffer.characterIndexForPosition(position);
-    return KiteAPI.getSignaturesAtPosition(editor.getPath(), text, cursorPosition, 'atom', 'utf-16');
+    return KiteAPI.getMaxFileSizeBytes().then(max => {
+      if (text.length > max) {
+        return Promise.resolve();
+      }
+
+      const cursorPosition = buffer.characterIndexForPosition(position);
+      return KiteAPI.getSignaturesAtPosition(editor.getPath(), text, cursorPosition, 'atom', 'utf-16');
+    });
   },
 
   getHoverDataAtRange(editor, range) {
@@ -34524,10 +34541,6 @@ const DataLoader = {
 
   getUserAccountInfo() {
     return KiteAPI.getUserAccountInfo();
-  },
-
-  getMaxFileSize() {
-    return KiteAPI.getKiteSetting('max_file_size_kb').then(res => res * Math.pow(2, 10));
   },
 
   isUserAuthenticated() {
@@ -40763,35 +40776,37 @@ class EditorEvents {
       return;
     }
 
-    let focus = this.pendingEvents.filter(e => e === 'focus')[0];
-    let action = this.pendingEvents.some(e => e === 'edit') ? 'edit' : this.pendingEvents.pop();
-    this.reset();
-    const payload = JSON.stringify(this.buildEvent(action));
-    let promise = Promise.resolve();
+    const text = this.editor.getText();
+    KiteAPI.getMaxFileSizeBytes().then(max => {
+      if (text.length > max) {
+        return;
+      }
 
-    if (focus && action !== focus) {
-      promise = promise.then(() => KiteAPI.request({
+      const focus = this.pendingEvents.filter(e => e === 'focus')[0];
+      const action = this.pendingEvents.some(e => e === 'edit') ? 'edit' : this.pendingEvents.pop();
+      this.reset();
+      const payload = JSON.stringify(this.buildEvent(action));
+      let promise = Promise.resolve();
+
+      if (focus && action !== focus) {
+        promise = promise.then(() => KiteAPI.request({
+          path: '/clientapi/editor/event',
+          method: 'POST'
+        }, JSON.stringify(this.buildEvent(focus))));
+      }
+
+      promise.then(() => KiteAPI.request({
         path: '/clientapi/editor/event',
         method: 'POST'
-      }, JSON.stringify(this.buildEvent(focus))));
-    }
-
-    return promise.then(() => KiteAPI.request({
-      path: '/clientapi/editor/event',
-      method: 'POST'
-    }, payload)).then(res => {
-      this.pendingPromiseResolve(res);
-    }).catch(err => {
-      this.pendingPromiseReject && this.pendingPromiseReject(err); // on connection error send a metric, but not too often or we will generate too many events
-      // if (!this.lastErrorAt ||
-      //     secondsSince(this.lastErrorAt) >= CONNECT_ERROR_LOCKOUT) {
-      //   this.lastErrorAt = new Date();
-      //   // metrics.track('could not connect to event endpoint', err);
-      // }
-    }).then(() => {
-      delete this.pendingPromise;
-      delete this.pendingPromiseResolve;
-      delete this.pendingPromiseReject;
+      }, payload)).then(res => {
+        this.pendingPromiseResolve(res);
+      }).catch(err => {
+        this.pendingPromiseReject && this.pendingPromiseReject(err);
+      }).finally(() => {
+        delete this.pendingPromise;
+        delete this.pendingPromiseResolve;
+        delete this.pendingPromiseReject;
+      });
     });
   }
 
@@ -41605,7 +41620,7 @@ module.exports = class Status {
           this.tooltipText = TOOLTIPS.noIndex;
           this.statusText.innerHTML = LABELS[STATES.NOINDEX];
         } else {
-          DataLoader.getMaxFileSize().then(max => {
+          KiteAPI.getMaxFileSizeBytes().then(max => {
             if (editor.getBuffer().getLength() >= max) {
               this.tooltipText = TOOLTIPS.sizeExceedsLimit;
             } else {
@@ -61677,7 +61692,7 @@ class KiteStatusPanel extends HTMLElement {
           kiteEnterpriseInstalled
         };
       });
-    }), DataLoader.getUserAccountInfo().catch(() => {}), DataLoader.getStatus(editor), DataLoader.isUserAuthenticated().catch(() => {}), DataLoader.getMaxFileSize().catch(() => NaN)];
+    }), DataLoader.getUserAccountInfo().catch(() => {}), DataLoader.getStatus(editor), DataLoader.isUserAuthenticated().catch(() => {}), KiteAPI.getMaxFileSizeBytes()];
     return Promise.all(promises).then(data => {
       this.render(...data);
     });
