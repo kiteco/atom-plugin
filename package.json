@@ -70,7 +70,7 @@
     },
     "pollingInterval": {
       "type": "integer",
-      "default": 15000,
+      "default": 5000,
       "min": 1000,
       "max": 60000,
       "title": "Polling interval",
