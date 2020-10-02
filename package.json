@@ -1,7 +1,7 @@
 {
   "name": "kite",
   "main": "./dist/main",
-  "version": "0.187.0",
+  "version": "0.188.0",
   "description": "Code faster, stay in flow. AI-powered coding assistant featuring line-of-code Python and JavaScript autocompletions, advanced function signatures, and instant documentation.",
   "repository": "https://github.com/kiteco/atom-plugin",
   "keywords": [],
