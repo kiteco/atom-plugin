@@ -38962,7 +38962,7 @@ class EditorEvents {
       this.pendingPromiseResolve(res);
     }).catch(err => {
       this.pendingPromiseReject && this.pendingPromiseReject(err);
-    }).finally(() => {
+    }).then(() => {
       delete this.pendingPromise;
       delete this.pendingPromiseResolve;
       delete this.pendingPromiseReject;
