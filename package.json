@@ -114,7 +114,7 @@
     "element-resize-detector": "^1.1.11",
     "fuzzaldrin-plus": "^0.4.1",
     "getmac": "1.2.1",
-    "kite-api": "=3.17.0",
+    "kite-api": "=3.18.0",
     "kite-connector": "=3.12.0",
     "kite-installer": "=3.16.0",
     "lodash": "^4.17.11",
