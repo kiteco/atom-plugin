@@ -1,0 +1,28 @@
+@import "variables";
+
+.kite-codenav-decoration {
+  // Programatically given marginTop and marginLeft
+
+  button {
+    background: none!important;
+    border: none;
+    padding: 0!important;
+    opacity: 0.6;
+    display:flex;
+    justify-content: space-between;
+  }
+
+  kite-logo {
+    margin-top: -0.08rem;
+    width: 1rem;
+    height: 1rem;
+    svg polygon {
+      fill: @blue-color;
+    }
+  }
+
+  .text {
+    color: @blue-color;
+    margin-left: 0.4rem;
+  }
+}

@@ -24,6 +24,12 @@
       "title": "Show welcome notification on startup",
       "description": "Whether or not to show the Kite welcome notification on startup."
     },
+    "enableCodeFinderLineDecoration": {
+      "type": "boolean",
+      "default": "true",
+      "title": "Enable codefinder decoration",
+      "description": "Show a clickable decoration on the cursor line that starts a line-based search for related code."
+    },
     "enableCompletions": {
       "type": "boolean",
       "default": true,
