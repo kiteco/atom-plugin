@@ -1,7 +1,6 @@
 'use strict';
 
 const path = require('path');
-const {install: {Install}} = require('kite-installer');
 const KiteAPI = require('kite-api');
 const {withKite, withKiteRoutes} = require('kite-api/test/helpers/kite');
 const {fakeResponse} = require('kite-api/test/helpers/http');
@@ -129,34 +128,6 @@ describe('Kite', () => {
         expect(kitePkg.getModule('a')).toBe(a);
         expect(kitePkg.getModule('b')).toBe(b);
         expect(kitePkg.getModule('c')).toBeUndefined();
-      });
-    });
-  });
-
-  withKite({installed: false}, () => {
-    withKiteRoutes([[
-      o => o.path === '/atom/events',
-      o => fakeResponse(200, JSON.stringify({
-        decision: true,
-        variant: {
-          buttonPosition: 'top',
-          installCopy: 'short',
-          installTitle: 'choose',
-          showKiteLogo: 'yes',
-          showScreenshot: 'no',
-        },
-      })),
-    ]], () => {
-      beforeEach(() => {
-        localStorage.setItem('kite.wasInstalled', false);
-        waitsForPromise(() => atom.packages.activatePackage('kite').then(pkg => {
-          kitePkg = pkg.mainModule;
-        }));
-      });
-
-      it('opens the install flow in a new tab', () => {
-        const item = atom.workspace.getActivePaneItem();
-        expect(item instanceof Install).toBeTruthy();
       });
     });
   });

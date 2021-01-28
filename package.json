@@ -122,7 +122,6 @@
     "getmac": "1.2.1",
     "kite-api": "=3.20.0",
     "kite-connector": "=3.14.0",
-    "kite-installer": "=3.16.0",
     "lodash": "^4.17.11",
     "md5": "^2.2.0",
     "rollbar": "^2.3.8",
