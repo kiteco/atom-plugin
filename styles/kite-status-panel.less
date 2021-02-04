@@ -122,17 +122,37 @@ kite-status-panel {
       margin-top: @component-padding;
     }
 
+    .btn-left {
+      margin-right: 1em;
+    }
+
     &:nth-child(1n+2) {
       padding: @component-padding @half-padding 0;
       border-top: 1px solid @subtle-border-color;
     }
 
+    .center-aligned-line {
+      display: flex;
+      align-items: center;
+    }
+
+    .text-container {
+      display: flex;
+      flex-flow: column;
+      word-wrap: break-word;
+      overflow-wrap: break-word;
+      white-space: normal;
+    }
+
+    .text-line {
+      display: inline-block;
+    }
+
     .dot {
       font-size: 2.4em;
       line-height: 0.5em;
-      vertical-align: sub;
-      display: inline-block;
-      margin-left: 0.5em;
+      margin-bottom: 0.12em;
+      margin-left: 0.2em;
     }
 
     .ready .dot {
