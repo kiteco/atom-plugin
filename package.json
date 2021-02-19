@@ -26,7 +26,7 @@
     },
     "enableCodeFinderLineDecoration": {
       "type": "boolean",
-      "default": "true",
+      "default": true,
       "title": "Enable codefinder decoration",
       "description": "Show a clickable decoration on the cursor line that starts a line-based search for related code."
     },
